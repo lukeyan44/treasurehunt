@@ -1,3 +1,5 @@
+GIT: https://github.com/lukeyan44/treasurehunt
+
 cordova create treasurehunt nu.grapevine.treasurehunt TreasureHunt
 
 cordova platform add android
