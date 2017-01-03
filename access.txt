@@ -1,0 +1,22 @@
+cordova create treasurehunt nu.grapevine.treasurehunt TreasureHunt
+
+cordova platform add android
+
+cordova run browser
+
+cordova build android
+
+keytool -genkey -v -keystore treasurehunt-release-key.keystore -alias treasurehunt -keyalg RSA -keysize 2048 -validity 10000
+
+ÃÜÂë: treasurehunt
+
+
+AIzaSyAUgDLaw-bsGGOj_sy-G8TzNcVT1qg_YuQ
+
+cordova build android --release
+
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore treasurehunt-release-key.keystore -signedjar treasurehunt.apk -storepass treasurehunt platforms/android/build/outputs/apk/android-release-unsigned.apk treasurehunt
+
+
+cordova run android --release --device

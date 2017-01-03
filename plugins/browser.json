@@ -1,0 +1,28 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-googlemaps": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-barcodescanner": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        }
+    }
+}
