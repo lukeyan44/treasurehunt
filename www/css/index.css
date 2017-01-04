@@ -184,6 +184,7 @@ margin-right:auto;
 height:25px;
 background-color:#ff0000;
 width:0px;
+text-transform:none;
 }
 
 #delayblock-text{
@@ -193,6 +194,11 @@ font-weight:bold;
 background-color:#ffffff;
 color:#000000;
 width:100%;
+text-transform:none;
+}
+
+#popupPane{
+text-transform:none;
 }
 
 .popuptext{
@@ -203,9 +209,11 @@ left:0px;
 z-index:999999;
 background-color:#ffffff;
 overflow:auto;
+text-transform:none;
 }
 
 .popuptext img{
 max-width:100%;
 height:auto;
+text-transform:none;
 }

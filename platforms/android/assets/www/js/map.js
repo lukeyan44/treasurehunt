@@ -25,6 +25,9 @@ appPanes.panes['map'] = {
 	initMap: function(param){
 			currentTeam = param.team;
 			
+			// for test
+			currentTeam.currentQuestion = 0;
+			
 			goalPoint.lat = currentTeam.goal_latitude;
 			goalPoint.lng = currentTeam.goal_longitude;
 			goalPoint.window1 = currentTeam.theme_goaltext;
@@ -116,7 +119,7 @@ function onMapReady(){
 		for(var i = 0; i< currentTeam.currentQuestion; i++){
 			var q = currentTeam.questions[i];
 			var label = q.goal ? 'X' : (q.index+1);
-
+			//alert(i+", lat: "+q.lat+", lng: "+q.lng);
 			q.marker = map.addMarker({
 				position: {lat: q.lat, lng: q.lng},
 				question: q,
@@ -215,6 +218,7 @@ function showGoalWindow(q){
 	html += q.window1 ? q.window1 : '';
 	html += '</div></div>';
 
+	$("#popupPane").html("");
 	$("#popupPane").append(html);
 }
 
@@ -282,9 +286,9 @@ function onSelectAnswer(answerIndex){
 
 function checkPunishmentTime2(){
 	curPunishmentTime++;
-	$("#delayblock-text").html((punishmentTime-curPunishmentTime));
+	$("#delayblock-text").html((currentTeam.punishmentTime-curPunishmentTime));
 	
-	if(curPunishmentTime >= punishmentTime){
+	if(curPunishmentTime >= currentTeam.punishmentTime){
 		clearInterval(punishmentTimeCounterRef);
 		punishmentTimeCounterRef = null;
 		
@@ -298,8 +302,8 @@ function checkPunishmentTime2(){
 
 function updateLoc(lat, lng){
 
-	//lat = 59.3410480;
-	//lng = 18.0877876;
+	lat = 59.3427786858;
+	lng = 18.0730147;
 
 	var q = currentTeam.questions[currentTeam.currentQuestion];
 
