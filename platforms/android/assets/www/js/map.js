@@ -26,7 +26,7 @@ appPanes.panes['map'] = {
 			currentTeam = param.team;
 			
 			// for test
-			currentTeam.currentQuestion = 0;
+			// currentTeam.currentQuestion = 0;
 			
 			goalPoint.lat = currentTeam.goal_latitude;
 			goalPoint.lng = currentTeam.goal_longitude;
@@ -302,8 +302,8 @@ function checkPunishmentTime2(){
 
 function updateLoc(lat, lng){
 
-	lat = 59.3427786858;
-	lng = 18.0730147;
+	//lat = 59.3427786858;
+	//lng = 18.0730147;
 
 	var q = currentTeam.questions[currentTeam.currentQuestion];
 
