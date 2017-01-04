@@ -138,7 +138,7 @@ function onMapReady(){
 }
 
 function onClickQuestion(e){
-	alert('onClickQuestion: '+currentTeam.currentQuestion);
+	//alert('onClickQuestion: '+currentTeam.currentQuestion);
 
 	var q = currentTeam.questions[currentTeam.currentQuestion];
 	
@@ -214,7 +214,7 @@ function showGoalWindow(q){
 	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
 	html += q.window1 ? q.window1 : '';
 	html += '</div></div>';
-	alert(html);
+
 	$("#popupPane").append(html);
 }
 
@@ -298,8 +298,8 @@ function checkPunishmentTime2(){
 
 function updateLoc(lat, lng){
 
-	lat = 59.3410480;
-	lng = 18.0877876;
+	//lat = 59.3410480;
+	//lng = 18.0877876;
 
 	var q = currentTeam.questions[currentTeam.currentQuestion];
 

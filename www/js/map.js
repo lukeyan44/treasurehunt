@@ -298,8 +298,8 @@ function checkPunishmentTime2(){
 
 function updateLoc(lat, lng){
 
-	lat = 59.3410480;
-	lng = 18.0877876;
+	//lat = 59.3410480;
+	//lng = 18.0877876;
 
 	var q = currentTeam.questions[currentTeam.currentQuestion];
 
