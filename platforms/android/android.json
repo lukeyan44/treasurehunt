@@ -71,6 +71,10 @@
                         {
                             "xml": "<activity android:label=\"@string/share_name\" android:name=\"com.google.zxing.client.android.HelpActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<receiver android:name=\"cordova.plugins.Diagnostic$LocationProviderChangedReceiver\"><intent-filter><action android:name=\"android.location.PROVIDERS_CHANGED\" /></intent-filter></receiver>",
+                            "count": 1
                         }
                     ],
                     "/manifest": [
@@ -602,6 +606,16 @@
                         }
                     ]
                 }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Diagnostic\"><param name=\"android-package\" value=\"cordova.plugins.Diagnostic\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
             }
         }
     },
@@ -620,6 +634,9 @@
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         },
         "cordova-plugin-barcodescanner": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova.plugins.diagnostic": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
@@ -654,6 +671,14 @@
             "clobbers": [
                 "cordova.plugins.barcodeScanner"
             ]
+        },
+        {
+            "id": "cordova.plugins.diagnostic.Diagnostic",
+            "file": "plugins/cordova.plugins.diagnostic/www/android/diagnostic.js",
+            "pluginId": "cordova.plugins.diagnostic",
+            "clobbers": [
+                "cordova.plugins.diagnostic"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -661,6 +686,7 @@
         "cordova-plugin-compat": "1.1.0",
         "cordova-plugin-geolocation": "2.4.1",
         "cordova-plugin-googlemaps": "1.4.0",
-        "cordova-plugin-barcodescanner": "0.7.0"
+        "cordova-plugin-barcodescanner": "0.7.0",
+        "cordova.plugins.diagnostic": "3.3.2"
     }
 }

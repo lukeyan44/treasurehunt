@@ -29,6 +29,14 @@ module.exports = [
         "clobbers": [
             "cordova.plugins.barcodeScanner"
         ]
+    },
+    {
+        "id": "cordova.plugins.diagnostic.Diagnostic",
+        "file": "plugins/cordova.plugins.diagnostic/www/android/diagnostic.js",
+        "pluginId": "cordova.plugins.diagnostic",
+        "clobbers": [
+            "cordova.plugins.diagnostic"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -38,7 +46,8 @@ module.exports.metadata =
     "cordova-plugin-compat": "1.1.0",
     "cordova-plugin-geolocation": "2.4.1",
     "cordova-plugin-googlemaps": "1.4.0",
-    "cordova-plugin-barcodescanner": "0.7.0"
+    "cordova-plugin-barcodescanner": "0.7.0",
+    "cordova.plugins.diagnostic": "3.3.2"
 };
 // BOTTOM OF METADATA
 });

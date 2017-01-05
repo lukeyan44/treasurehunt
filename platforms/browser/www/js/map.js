@@ -7,6 +7,11 @@ var timerCounterRef = null;
 var userLocMarker = null;
 var overlay = false;
 
+var infowindow = null;
+
+var curPunishmentTime = 0;
+var punishmentTimeCounterRef = null;
+
 var goalPoint = {goal: true, 
 				 lat: 0 , 
 				 lng: 0,
@@ -20,6 +25,9 @@ appPanes.panes['map'] = {
 	initMap: function(param){
 			currentTeam = param.team;
 			
+			// for test
+			// currentTeam.currentQuestion = 0;
+			
 			goalPoint.lat = currentTeam.goal_latitude;
 			goalPoint.lng = currentTeam.goal_longitude;
 			goalPoint.window1 = currentTeam.theme_goaltext;
@@ -31,9 +39,15 @@ appPanes.panes['map'] = {
 				$("#map-info").html("<h2>You have finished it</h2>");
 			}else{
 				//initGoogleMap();
-				$("#map-info").html(currentTeam.theme_story_board);
-				$("#map-button-next").show();
-				toggleMapActoin(true);
+				
+				if(currentTeam.cached){
+					mapButtonAction.start();
+				}else{
+					$("#map-info").html(currentTeam.theme_story_board);
+					$("#map-button-next").show();
+					toggleMapActoin(true);
+				}
+
 			}
 			
 			
@@ -57,7 +71,7 @@ function initGoogleMap(_lat, _lng, bool){
 	}
 	
 	var h = $(window).height();
-	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'>&nbsp;</div>");
+	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div></div>");
 	var div = document.getElementById("map_canvas");
 	
 	map = plugin.google.maps.Map.getMap(div);
@@ -89,10 +103,6 @@ var traceInterval = null;
 function onMapReady(){
 	//showAlert('onMapReady');
 	
-	traceInterval = setInterval(function(){
-		//map.setCenter(getCurrentLocation());
-	}, 5000);
-	
 	map.setZoom(targetZoom);
 	
 	if(onloadLoc){
@@ -109,8 +119,8 @@ function onMapReady(){
 		for(var i = 0; i< currentTeam.currentQuestion; i++){
 			var q = currentTeam.questions[i];
 			var label = q.goal ? 'X' : (q.index+1);
-			
-			map.addMarker({
+			//alert(i+", lat: "+q.lat+", lng: "+q.lng);
+			q.marker = map.addMarker({
 				position: {lat: q.lat, lng: q.lng},
 				question: q,
 				icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000',
@@ -120,28 +130,216 @@ function onMapReady(){
 		startQuestion(currentTeam.currentQuestion);
 	}
 	
+	traceInterval = setInterval(function(){
+		// TODO
+		// map.setCenter(getCurrentLocation());
+		var loc = getCurrentLocation();
+		if(loc != null){
+			updateLoc(loc.lat, loc.lng);
+		}
+	}, 1000);
+}
+
+function onClickQuestion(e){
+	//alert('onClickQuestion: '+currentTeam.currentQuestion);
+
+	var q = currentTeam.questions[currentTeam.currentQuestion];
 	
-	// Add a maker
-	/*
-	map.addMarker({
-	  position: {lat: 37.422359, lng: -122.084344},
-	  title: "Welecome to \n" +
-			 "Cordova GoogleMaps plugin for iOS and Android",
-	  snippet: "This plugin is awesome!"
-	}, function(marker) {
+	var currentTime = Math.floor(new Date().getTime()/1000);
+	
+	if(q.goal){
+		clearInterval(timerCounterRef);
+		timerCounterRef = null;
+		
+		$("#postForm").html("");
+		
+		var html = '<form action="#" method="post"><input type="hidden" name="start" value="'+currentTeam.startTime+'">';
+		html += '<input type="hidden" name="end" value="'+currentTime+'">';
+		html += '<input type="hidden" name="goal" value="1">';
+		html += '<input type="hidden" name="event_nid" value="<?php print $event_nid; ?>">';
+		for(var i=0; i<currentTeam.questions.length-1; i++){
+			var temp = currentTeam.questions[i];
+			html += '<input type="hidden" name="q['+temp.index+'][index]" value="'+temp.index+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][nid]" value="'+temp.nid+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][startTime]" value="'+temp.startTime+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][endTime]" value="'+temp.endTime+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][answerIndex]" value="'+temp.answerIndex+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][correct]" value="'+((temp.answerIndex == temp.field_correct_answer) ? 1 : 0)+'">';
+		}
+		html += '</form>';
+		
+		$("#postForm").append(html);
+		var str = $("#postForm form").serialize();
+		$.post("post-answer/"+currentTeam.nid, str, function(){});
+		
+		showGoalWindow(q);
+		
+	}else{
+		
+		if(infowindow){
+			infowindow.close();
+			infowindow = null;
+		}
+		
+		showQuestionWindow(q);
+		
+		$("#postForm").html("");
+		
+		var html = '<form action="#" method="post"><input type="hidden" name="start" value="'+currentTeam.startTime+'">';
+		html += '<input type="hidden" name="end" value="'+currentTime+'">';
+		html += '<input type="hidden" name="goal" value="0">';
+		html += '<input type="hidden" name="event_nid" value="<?php print $event_nid; ?>">';
+		for(var i=0; i<currentTeam.questions.length-1; i++){
+			var temp = currentTeam.questions[i];
+			html += '<input type="hidden" name="q['+temp.index+'][index]" value="'+temp.index+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][nid]" value="'+temp.nid+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][startTime]" value="'+temp.startTime+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][endTime]" value="'+temp.endTime+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][answerIndex]" value="'+temp.answerIndex+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][correct]" value="'+((temp.answerIndex == temp.field_correct_answer) ? 1 : 0)+'">';
+		}
+		html += '</form>';
+		
+		$("#postForm").append(html);
+		
+		var str = $("#postForm form").serialize();
+		$.post("post-answer/"+currentTeam.nid, str, function(){});
 
-	  // Show the info window
-	  marker.showInfoWindow();
+	}
 
-	  // Catch the click event
-	  marker.on(plugin.google.maps.event.INFO_CLICK, function() {
+}
 
-		// To do something...
-		alert("Hello world!");
+function showGoalWindow(q){
+	overlay = true;
+	
+	var token = new Date().getTime();
 
-	  });
+	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
+	html += q.window1 ? q.window1 : '';
+	html += '</div></div>';
+
+	$("#popupPane").html("");
+	$("#popupPane").append(html);
+}
+
+function showQuestionWindow(q){
+	overlay = true;
+	//$("body").css("overflow", "hidden");
+
+	var token = new Date().getTime();
+
+	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+($(window).height())+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
+	html += q.window1 ? q.window1 : '';
+	html += '<br/><h3 class="mapqtitle">'+q.title+'</h3><ol class="mapanswers">';
+	for(var i in q.answers){
+		html += '<li><label><input type="radio" name="answer" class="option" value="'+i+'"> '+q.answers[i]+"</label></li>";
+	}
+	html += '</ol><input type="button" value="Submit" onclick="onSelectAnswerOpts();">';
+	html += q.window2 ? q.window2 : '';
+	html += '</div></div>';
+	
+	$("#popupPane").append(html);
+}
+
+function onSelectAnswerOpts(){
+	$(".popuptext .option").each(function(){
+		if(this.checked){
+			onSelectAnswer(this.value);
+		}
 	});
-	*/
+}
+
+function onSelectAnswer(answerIndex){
+	var q = currentTeam.questions[currentTeam.currentQuestion];
+	
+	q.endTime = Math.floor(new Date().getTime()/1000);
+	q.answerIndex = answerIndex;
+	
+	var label = q.goal ? 'G' : (q.index+1);
+	q.marker.setIcon('http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000');
+	//q.marker.setCursor('default');
+	try{
+		q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+	}catch(e){}
+	
+	if(infowindow){
+		infowindow.close();
+		infowindow = null;
+	}
+	
+	if(q.answerIndex == q.field_correct_answer){
+		overlay = false;
+		//$("body").css("overflow", "auto");
+		//$.fn.fancybox.close();
+		$(".popuptext").remove();
+		var next = startQuestion(q.index+1);
+	}else{
+		var html = "<br/><br/><h3>Wrong answer. You now have to wait "+currentTeam.punishmentTime+" seconds before you can reply again.</h3><br/>";
+		html += '<div class="delay-wrapper"><div id="delayblock" style="display:none;"></div><div id="delayblock-text" style="text-align:center;"></div></div>';
+		
+		$(".popuptext .popuptext-inner").html(html);
+		
+		curPunishmentTime = 0;
+		punishmentTimeCounterRef = setInterval(checkPunishmentTime2, 1000);
+	}
+}
+
+function checkPunishmentTime2(){
+	curPunishmentTime++;
+	$("#delayblock-text").html((currentTeam.punishmentTime-curPunishmentTime));
+	
+	if(curPunishmentTime >= currentTeam.punishmentTime){
+		clearInterval(punishmentTimeCounterRef);
+		punishmentTimeCounterRef = null;
+		
+		overlay = false;
+		var q = currentTeam.questions[currentTeam.currentQuestion];
+		$(".popuptext").remove();
+		
+		showQuestionWindow(q);
+	}
+}
+
+function updateLoc(lat, lng){
+
+	//lat = 59.3427786858;
+	//lng = 18.0730147;
+
+	var q = currentTeam.questions[currentTeam.currentQuestion];
+
+	var distance = GetDistance(lat, lng, q.lat, q.lng);
+
+	var label = q.goal ? 'X' : (q.index+1);
+	if(currentTeam.closeDistance < distance){
+		q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000'});
+		//q.marker.setCursor('default');
+		
+		try{
+			q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+		}catch(e){}
+	}else{
+		q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|669999|000000'});
+		//q.marker.setCursor('pointer');
+		
+		try{
+			q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+		}catch(e){}
+		q.marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+	}
+	
+	if(map){
+		if(!userLocMarker){
+			userLocMarker = map.addMarker({
+				position: {lat: lat, lng: lng},
+			}, function(marker){
+				userLocMarker = marker;
+			});
+		}else{
+			userLocMarker.setPosition(new plugin.google.maps.LatLng(lat, lng));
+		}
+	}
+	
+	map.setCenter(new plugin.google.maps.LatLng(lat, lng));
 }
 
 function startQuestion(index){
@@ -158,7 +356,10 @@ function startQuestion(index){
 	map.addMarker({
 		position: {lat: q.lat, lng: q.lng},
 		question: q,
+		//title: q.index,
 		icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000',
+	}, function(marker){
+		q.marker = marker;
 	});
 	
 	map.setCenter(new plugin.google.maps.LatLng(q.lat, q.lng));

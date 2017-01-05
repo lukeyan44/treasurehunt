@@ -19,6 +19,9 @@
         },
         "cordova-plugin-barcodescanner": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova.plugins.diagnostic": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {

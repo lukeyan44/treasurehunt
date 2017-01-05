@@ -21,6 +21,9 @@
         },
         "cordova-plugin-barcodescanner": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova.plugins.diagnostic": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {},
@@ -47,6 +50,7 @@
         "cordova-plugin-compat": "1.1.0",
         "cordova-plugin-geolocation": "2.4.1",
         "cordova-plugin-googlemaps": "1.4.0",
-        "cordova-plugin-barcodescanner": "0.7.0"
+        "cordova-plugin-barcodescanner": "0.7.0",
+        "cordova.plugins.diagnostic": "3.3.2"
     }
 }

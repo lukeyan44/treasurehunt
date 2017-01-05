@@ -22,3 +22,7 @@ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore treasurehunt-re
 
 
 cordova run android --release --device
+
+
+error: unknown host service的解决办法
+http://bbs.gfan.com/android-7224337-1-1.html

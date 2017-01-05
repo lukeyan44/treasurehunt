@@ -37,6 +37,19 @@ var app = {
         this.receivedEvent('deviceready');
 		
 		gotoPane('login');
+		
+		cordova.plugins.diagnostic.isWifiAvailable(function(available){
+			if(!available){
+				// enable wifi
+				cordova.plugins.diagnostic.setWifiState(function(){
+					// wifi has been enabled
+				}, function(error){
+					alert("Error when enable WIFI: " + error);
+				}, true);
+			}
+		}, function(error){
+			alert("Error when checking WIFI: " + error);
+		});
     },
 
     // Update DOM on a Received Event
