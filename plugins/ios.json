@@ -1,0 +1,38 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-barcodescanner": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-geolocation": {
+            "GEOLOCATION_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-googlemaps": {
+            "API_KEY_FOR_IOS": "YOUR_IOS_API_KEY_IS_HERE",
+            "NSLOCATIONWHENINUSEUSAGEDESCRIPTION": "Show your location on the map",
+            "NSLOCATIONALWAYSUSAGEDESCRIPTION": "Trace your location on the map",
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova.plugins.diagnostic": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "com.googlemaps.ios": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        }
+    }
+}

@@ -13,7 +13,9 @@
             "id": "cordova-plugin-geolocation"
         },
         "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "GEOLOCATION_USAGE_DESCRIPTION": " "
+        }
     },
     "cordova-plugin-compat": {
         "source": {
@@ -31,7 +33,9 @@
         "is_top_level": true,
         "variables": {
             "API_KEY_FOR_ANDROID": "AIzaSyAUgDLaw-bsGGOj_sy-G8TzNcVT1qg_YuQ",
-            "API_KEY_FOR_IOS": "YOUR_IOS_API_KEY_IS_HERE"
+            "API_KEY_FOR_IOS": "YOUR_IOS_API_KEY_IS_HERE",
+            "NSLOCATIONWHENINUSEUSAGEDESCRIPTION": "Show your location on the map",
+            "NSLOCATIONALWAYSUSAGEDESCRIPTION": "Trace your location on the map"
         }
     },
     "cordova-plugin-barcodescanner": {
@@ -48,6 +52,15 @@
             "id": "cordova.plugins.diagnostic"
         },
         "is_top_level": true,
+        "variables": {}
+    },
+    "com.googlemaps.ios": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mapsplugin/cordova-plugin-googlemaps-sdk",
+            "subdir": "."
+        },
+        "is_top_level": false,
         "variables": {}
     }
 }
