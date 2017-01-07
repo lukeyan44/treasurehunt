@@ -8,12 +8,12 @@ function httpInit(){
 		//showAlert("loc: "+position.coords.latitude+", "+position.coords.longitude);
 		_globalConfig.deviceLoc = position.coords;
 	}, function(){
-		showAlert("Failed to retrieve location");
+		//showAlert("Failed to retrieve location");
 	}, {timeout: 30000});
 }
 
 function getCurrentLocation(){
-	return new plugin.google.maps.LatLng(_globalConfig.deviceLoc.latitude, _globalConfig.deviceLoc.longitude);
+	return (_globalConfig.deviceLoc == null) ? false : new plugin.google.maps.LatLng(_globalConfig.deviceLoc.latitude, _globalConfig.deviceLoc.longitude);
 }
 
 function currentSid(_sid){
