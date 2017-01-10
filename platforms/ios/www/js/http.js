@@ -3,17 +3,37 @@ var _globalConfig = {
 	sid: null
 };
 
+function isAndroid(){
+	return device.platform == 'Android';
+}
+
+function isAndroid6(){
+	if(isAndroid()){
+		var version = "" + device.version;
+		var pos = version.indexOf(".");
+		if(pos >= 0){
+			version = version.substring(0, pos);
+		}
+		var versionNum = parseInt(version);
+		return versionNum >= 6;
+	}else{
+		return false;
+	}
+
+	return device.platform == 'Android';
+}
+
 function httpInit(){
 	var watchId = navigator.geolocation.watchPosition(function(position){
 		//showAlert("loc: "+position.coords.latitude+", "+position.coords.longitude);
 		_globalConfig.deviceLoc = position.coords;
 	}, function(){
-		showAlert("Failed to retrieve location");
+		//showAlert("Failed to retrieve location");
 	}, {timeout: 30000});
 }
 
 function getCurrentLocation(){
-	return new plugin.google.maps.LatLng(_globalConfig.deviceLoc.latitude, _globalConfig.deviceLoc.longitude);
+	return (_globalConfig.deviceLoc == null) ? false : new plugin.google.maps.LatLng(_globalConfig.deviceLoc.latitude, _globalConfig.deviceLoc.longitude);
 }
 
 function currentSid(_sid){

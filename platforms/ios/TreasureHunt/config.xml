@@ -59,6 +59,9 @@
     <feature name="Diagnostic">
         <param name="ios-package" value="Diagnostic" />
     </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
     <name>TreasureHunt</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

@@ -57,7 +57,11 @@ var app = {
 			//alert("Location: "+available);
 			if(!available){
 				alert("Please enable location service");
-				cordova.plugins.diagnostic.switchToLocationSettings();
+				
+				if(isAndroid()){
+					cordova.plugins.diagnostic.switchToLocationSettings();
+				}
+				
 			}else{
 				// for only android
 				/*

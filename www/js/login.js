@@ -4,6 +4,9 @@ var loginPane = {
 
 	login: function(){
 		
+		var self = this;
+	
+		/*
 		if(this.checkedLocationRef != null){
 			alert("Your location is not idientyfied yet please start the app again in 10 seconds.");
 			
@@ -26,8 +29,28 @@ var loginPane = {
 				return;
 			}
 		}
-
+		*/
 		
+		if(isAndroid6()){
+			cordova.plugins.diagnostic.isCameraAuthorized(function(authorized){
+				if(authorized){
+					self.loginImpl();
+				}else{
+					alert("Please enable camera for the app");
+				}
+			}, function(error){
+				alert("Error when checking camera: " + error);
+			});
+		}else if(isAndroid()){
+			this.loginImpl();
+		}else{
+			this.loginImpl();
+		}
+
+
+	},
+	
+	loginImpl: function(){
 		cordova.plugins.barcodeScanner.scan(function(result){
 			if(result.cancelled == false && result.text){
 				

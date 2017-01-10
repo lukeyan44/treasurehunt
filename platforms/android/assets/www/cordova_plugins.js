@@ -37,6 +37,14 @@ module.exports = [
         "clobbers": [
             "cordova.plugins.diagnostic"
         ]
+    },
+    {
+        "id": "cordova-plugin-device.device",
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "pluginId": "cordova-plugin-device",
+        "clobbers": [
+            "device"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -47,7 +55,8 @@ module.exports.metadata =
     "cordova-plugin-geolocation": "2.4.1",
     "cordova-plugin-googlemaps": "1.4.0",
     "cordova-plugin-barcodescanner": "0.7.0",
-    "cordova.plugins.diagnostic": "3.3.2"
+    "cordova.plugins.diagnostic": "3.3.2",
+    "cordova-plugin-device": "1.1.4"
 };
 // BOTTOM OF METADATA
 });

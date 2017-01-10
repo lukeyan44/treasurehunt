@@ -31,6 +31,10 @@
                         {
                             "xml": "<feature name=\"BarcodeScanner\"><param name=\"android-package\" value=\"com.phonegap.plugins.barcodescanner.BarcodeScanner\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -638,6 +642,9 @@
         },
         "cordova.plugins.diagnostic": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {},
@@ -679,6 +686,14 @@
             "clobbers": [
                 "cordova.plugins.diagnostic"
             ]
+        },
+        {
+            "id": "cordova-plugin-device.device",
+            "file": "plugins/cordova-plugin-device/www/device.js",
+            "pluginId": "cordova-plugin-device",
+            "clobbers": [
+                "device"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -687,6 +702,7 @@
         "cordova-plugin-geolocation": "2.4.1",
         "cordova-plugin-googlemaps": "1.4.0",
         "cordova-plugin-barcodescanner": "0.7.0",
-        "cordova.plugins.diagnostic": "3.3.2"
+        "cordova.plugins.diagnostic": "3.3.2",
+        "cordova-plugin-device": "1.1.4"
     }
 }

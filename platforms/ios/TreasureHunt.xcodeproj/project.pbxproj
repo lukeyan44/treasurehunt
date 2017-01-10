@@ -67,6 +67,7 @@
 		135896477D154C639A32C48B /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F0956A07D8040E89C70CFE5 /* EventKit.framework */; };
 		F3E4323C45F74F3D9C6DD620 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60CD73D39B8A4F25AFCDD4FA /* Contacts.framework */; };
 		0EA1CB555C87456088A816D0 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA690477493492788B00126 /* UserNotifications.framework */; };
+		E863542A3CC141BBA815CACE /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D593282D92914ED8BD84A69F /* CDVDevice.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,6 +184,8 @@
 		8F0956A07D8040E89C70CFE5 /* EventKit.framework */ = {isa = PBXFileReference; name = "EventKit.framework"; path = "System/Library/Frameworks/EventKit.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		60CD73D39B8A4F25AFCDD4FA /* Contacts.framework */ = {isa = PBXFileReference; name = "Contacts.framework"; path = "System/Library/Frameworks/Contacts.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		6CA690477493492788B00126 /* UserNotifications.framework */ = {isa = PBXFileReference; name = "UserNotifications.framework"; path = "System/Library/Frameworks/UserNotifications.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		D593282D92914ED8BD84A69F /* CDVDevice.m */ = {isa = PBXFileReference; name = "CDVDevice.m"; path = "cordova-plugin-device/CDVDevice.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		BDAF70C89F8443A5A8F656CC /* CDVDevice.h */ = {isa = PBXFileReference; name = "CDVDevice.h"; path = "cordova-plugin-device/CDVDevice.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -387,6 +390,8 @@
 				75E1ED3BF5FC4B9F88C9B257 /* MyPluginScrollView.h */,
 				AB45A1572F0249F581381206 /* Diagnostic.m */,
 				108F07835FF34755A3A7E7CB /* Diagnostic.h */,
+				D593282D92914ED8BD84A69F /* CDVDevice.m */,
+				BDAF70C89F8443A5A8F656CC /* CDVDevice.h */,
 			);
 			name = Plugins;
 			path = "TreasureHunt/Plugins";
@@ -525,6 +530,7 @@
 				08EF0E5E4EF24146879038E3 /* MyPluginLayerDebugView.m in Sources */,
 				BEB9D059657A4D8B92F73209 /* MyPluginScrollView.m in Sources */,
 				ED0E521E91A5473DBEC7CE4B /* Diagnostic.m in Sources */,
+				E863542A3CC141BBA815CACE /* CDVDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

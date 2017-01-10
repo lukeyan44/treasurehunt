@@ -217,3 +217,7 @@ max-width:100%;
 height:auto;
 text-transform:none;
 }
+
+#map-timer, #map-info{
+text-transform:none;
+}

@@ -21,6 +21,9 @@
         },
         "cordova.plugins.diagnostic": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {

@@ -40,15 +40,44 @@ var app = {
 		
 		cordova.plugins.diagnostic.isWifiAvailable(function(available){
 			if(!available){
-				// enable wifi
+				// enable wifi, only work in android, no similar function in iOS
+				// https://www.npmjs.com/package/cordova.plugins.diagnostic
 				cordova.plugins.diagnostic.setWifiState(function(){
 					// wifi has been enabled
+					alert("WIFI access has been enabled");
 				}, function(error){
 					alert("Error when enable WIFI: " + error);
 				}, true);
 			}
 		}, function(error){
 			alert("Error when checking WIFI: " + error);
+		});
+		
+		cordova.plugins.diagnostic.isLocationAvailable(function(available){
+			//alert("Location: "+available);
+			if(!available){
+				alert("Please enable location service");
+				
+				if(isAndroid()){
+					cordova.plugins.diagnostic.switchToLocationSettings();
+				}
+				
+			}else{
+				// for only android
+				/*
+				cordova.plugins.diagnostic.getLocationMode(function(locationMode){
+					if(locationMode != 'DEVICE_ONLY' && locationMode != 'HIGH_ACCURACY'){
+						// GPS not enabled
+						alert("Please enable GPS service");
+						cordova.plugins.diagnostic.switchToLocationSettings();
+					}
+				}, function(error){
+					alert("Error when getLocationMode: " + error);
+				});
+				*/
+			}
+		}, function(error){
+			alert("Error when checking Location Service: " + error);
 		});
     },
 

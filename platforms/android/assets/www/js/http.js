@@ -3,6 +3,26 @@ var _globalConfig = {
 	sid: null
 };
 
+function isAndroid(){
+	return device.platform == 'Android';
+}
+
+function isAndroid6(){
+	if(isAndroid()){
+		var version = "" + device.version;
+		var pos = version.indexOf(".");
+		if(pos >= 0){
+			version = version.substring(0, pos);
+		}
+		var versionNum = parseInt(version);
+		return versionNum >= 6;
+	}else{
+		return false;
+	}
+
+	return device.platform == 'Android';
+}
+
 function httpInit(){
 	var watchId = navigator.geolocation.watchPosition(function(position){
 		//showAlert("loc: "+position.coords.latitude+", "+position.coords.longitude);
