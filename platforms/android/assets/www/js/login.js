@@ -6,7 +6,6 @@ var loginPane = {
 		
 		var self = this;
 	
-		/*
 		if(this.checkedLocationRef != null){
 			alert("Your location is not idientyfied yet please start the app again in 10 seconds.");
 			
@@ -29,14 +28,13 @@ var loginPane = {
 				return;
 			}
 		}
-		*/
 		
 		if(isAndroid6()){
 			cordova.plugins.diagnostic.isCameraAuthorized(function(authorized){
 				if(authorized){
 					self.loginImpl();
 				}else{
-					alert("Please enable camera for the app");
+					alert("You need to permit the app to use the camera");
 				}
 			}, function(error){
 				alert("Error when checking camera: " + error);
