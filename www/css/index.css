@@ -221,3 +221,8 @@ text-transform:none;
 #map-timer, #map-info{
 text-transform:none;
 }
+
+a.logout-link{
+float:right;
+margin-right:5px;
+}
