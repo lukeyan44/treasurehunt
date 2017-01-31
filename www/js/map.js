@@ -30,6 +30,9 @@ appPanes.panes['map'] = {
 			
 			goalPoint.lat = currentTeam.goal_latitude;
 			goalPoint.lng = currentTeam.goal_longitude;
+			
+			//alert(goalPoint.lat+","+goalPoint.lng);
+			
 			goalPoint.window1 = currentTeam.theme_goaltext;
 			currentTeam.questions.push(goalPoint);
 			
@@ -71,7 +74,8 @@ function initGoogleMap(_lat, _lng, bool){
 	}
 	
 	var h = $(window).height();
-	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div></div>");
+	var logouthtml = '<a href="#" class="logout-link" onclick="logoutMap(); return false;">Logout</a>';
+	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div>"+logouthtml+"</div>");
 	var div = document.getElementById("map_canvas");
 	
 	map = plugin.google.maps.Map.getMap(div);
@@ -156,7 +160,7 @@ function onClickQuestion(e){
 		var html = '<form action="#" method="post"><input type="hidden" name="start" value="'+currentTeam.startTime+'">';
 		html += '<input type="hidden" name="end" value="'+currentTime+'">';
 		html += '<input type="hidden" name="goal" value="1">';
-		html += '<input type="hidden" name="event_nid" value="<?php print $event_nid; ?>">';
+		html += '<input type="hidden" name="event_nid" value="'+currentTeam.event_nid+'">';
 		for(var i=0; i<currentTeam.questions.length-1; i++){
 			var temp = currentTeam.questions[i];
 			html += '<input type="hidden" name="q['+temp.index+'][index]" value="'+temp.index+'">';
@@ -170,7 +174,8 @@ function onClickQuestion(e){
 		
 		$("#postForm").append(html);
 		var str = $("#postForm form").serialize();
-		$.post("post-answer/"+currentTeam.nid, str, function(){});
+		//alert('post['+currentTeam.nid+']: '+str);
+		$.post(ENV.baseurl+"/post-answer/"+currentTeam.nid, str, function(){});
 		
 		showGoalWindow(q);
 		
@@ -188,7 +193,7 @@ function onClickQuestion(e){
 		var html = '<form action="#" method="post"><input type="hidden" name="start" value="'+currentTeam.startTime+'">';
 		html += '<input type="hidden" name="end" value="'+currentTime+'">';
 		html += '<input type="hidden" name="goal" value="0">';
-		html += '<input type="hidden" name="event_nid" value="<?php print $event_nid; ?>">';
+		html += '<input type="hidden" name="event_nid" value="'+currentTeam.event_nid+'">';
 		for(var i=0; i<currentTeam.questions.length-1; i++){
 			var temp = currentTeam.questions[i];
 			html += '<input type="hidden" name="q['+temp.index+'][index]" value="'+temp.index+'">';
@@ -203,7 +208,7 @@ function onClickQuestion(e){
 		$("#postForm").append(html);
 		
 		var str = $("#postForm form").serialize();
-		$.post("post-answer/"+currentTeam.nid, str, function(){});
+		$.post(ENV.baseurl+"/post-answer/"+currentTeam.nid, str, function(){});
 
 	}
 

@@ -223,6 +223,7 @@ text-transform:none;
 }
 
 a.logout-link{
-float:right;
-margin-right:5px;
+position:absolute;
+bottom:5px;
+right:5px;
 }
