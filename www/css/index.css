@@ -222,8 +222,36 @@ text-transform:none;
 text-transform:none;
 }
 
-a.logout-link{
+.toplink-wrapper{
 position:absolute;
-bottom:5px;
+top:5px;
 right:5px;
+z-index:999999;
+}
+
+.popuptext-inner{
+padding-top:25px;
+}
+
+div#fancy_div{
+background-color:#ffffff;
+color: #000000;
+height:auto;
+}
+
+.abouttext-inner{
+font-size:120%;
+}
+
+.toplink-wrapper a{
+font-size:120%;
+}
+
+#homepane{
+text-align:center;
+padding-top:100px;
+}
+
+#homepane img{
+max-width:70%;
 }

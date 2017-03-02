@@ -221,3 +221,28 @@ text-transform:none;
 #map-timer, #map-info{
 text-transform:none;
 }
+
+.toplink-wrapper{
+position:absolute;
+top:5px;
+right:5px;
+}
+
+div#fancy_div{
+background-color:#ffffff;
+color: #000000;
+font-size:120%;
+}
+
+.toplink-wrapper a{
+font-size:120%;
+}
+
+#homepane{
+text-align:center;
+padding-top:100px;
+}
+
+#homepane img{
+max-width:70%;
+}

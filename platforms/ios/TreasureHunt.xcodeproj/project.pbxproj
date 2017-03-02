@@ -68,6 +68,7 @@
 		F3E4323C45F74F3D9C6DD620 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60CD73D39B8A4F25AFCDD4FA /* Contacts.framework */; };
 		0EA1CB555C87456088A816D0 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA690477493492788B00126 /* UserNotifications.framework */; };
 		E863542A3CC141BBA815CACE /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D593282D92914ED8BD84A69F /* CDVDevice.m */; };
+		6C71EFEA850F415B9DDC6238 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FDD5CEAAA7496481E8F278 /* CDVInAppBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,6 +187,8 @@
 		6CA690477493492788B00126 /* UserNotifications.framework */ = {isa = PBXFileReference; name = "UserNotifications.framework"; path = "System/Library/Frameworks/UserNotifications.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		D593282D92914ED8BD84A69F /* CDVDevice.m */ = {isa = PBXFileReference; name = "CDVDevice.m"; path = "cordova-plugin-device/CDVDevice.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		BDAF70C89F8443A5A8F656CC /* CDVDevice.h */ = {isa = PBXFileReference; name = "CDVDevice.h"; path = "cordova-plugin-device/CDVDevice.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		E9FDD5CEAAA7496481E8F278 /* CDVInAppBrowser.m */ = {isa = PBXFileReference; name = "CDVInAppBrowser.m"; path = "cordova-plugin-inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		92DDBD7B25DF4270AEA3217A /* CDVInAppBrowser.h */ = {isa = PBXFileReference; name = "CDVInAppBrowser.h"; path = "cordova-plugin-inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -392,6 +395,8 @@
 				108F07835FF34755A3A7E7CB /* Diagnostic.h */,
 				D593282D92914ED8BD84A69F /* CDVDevice.m */,
 				BDAF70C89F8443A5A8F656CC /* CDVDevice.h */,
+				E9FDD5CEAAA7496481E8F278 /* CDVInAppBrowser.m */,
+				92DDBD7B25DF4270AEA3217A /* CDVInAppBrowser.h */,
 			);
 			name = Plugins;
 			path = "TreasureHunt/Plugins";
@@ -531,6 +536,7 @@
 				BEB9D059657A4D8B92F73209 /* MyPluginScrollView.m in Sources */,
 				ED0E521E91A5473DBEC7CE4B /* Diagnostic.m in Sources */,
 				E863542A3CC141BBA815CACE /* CDVDevice.m in Sources */,
+				6C71EFEA850F415B9DDC6238 /* CDVInAppBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

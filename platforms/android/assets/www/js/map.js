@@ -74,14 +74,33 @@ function initGoogleMap(_lat, _lng, bool){
 	}
 	
 	var h = $(window).height();
-	var logouthtml = '<a href="#" class="logout-link" onclick="logoutMap(); return false;">Logout</a>';
+	var logouthtml = '<div class="toplink-wrapper"><a href="#abouttext" onclick="openPopupText(this); return false;">About grapevine treasure hunt app</a> | <a href="#" class="logout-link" onclick="logoutMap(); return false;">Logout</a></div>';
 	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div>"+logouthtml+"</div>");
 	var div = document.getElementById("map_canvas");
 	
 	map = plugin.google.maps.Map.getMap(div);
 	
 	map.on(plugin.google.maps.event.MAP_READY, onMapReady);
+}
+
+function openPopupText(link){
+	overlay = true;
 	
+	var text = $($(link).attr("href")).html();
+	var token = new Date().getTime();
+
+	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
+	html += text;
+	html += '<button class="ui-shadow ui-btn ui-corner-all" onclick="closePopupText();">Close</button>';
+	html += '</div></div>';
+
+	$("#popupPane").html("");
+	$("#popupPane").append(html);
+}
+
+function closePopupText(){
+	overlay = false;
+	$(".popuptext").remove();
 }
 
 var mapButtonAction = {

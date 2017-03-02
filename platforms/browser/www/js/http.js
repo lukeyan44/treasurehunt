@@ -3,6 +3,13 @@ var _globalConfig = {
 	sid: null
 };
 
+function openBrowserLink(link){
+	var href = $(link).attr("href");
+	alert(href);
+	alert(cordova.InAppBrowser);
+	cordova.InAppBrowser.open(href, '_system', '');
+}
+
 function isAndroid(){
 	return device.platform == 'Android';
 }
@@ -27,6 +34,8 @@ function httpInit(){
 	var watchId = navigator.geolocation.watchPosition(function(position){
 		//showAlert("loc: "+position.coords.latitude+", "+position.coords.longitude);
 		_globalConfig.deviceLoc = position.coords;
+		
+		//_globalConfig.deviceLoc = {latitude: 55.5989816809, longitude: 13.0007415};
 	}, function(){
 		//showAlert("Failed to retrieve location");
 	}, {timeout: 30000});

@@ -6,6 +6,7 @@ var loginPane = {
 		
 		var self = this;
 	
+		/*
 		if(this.checkedLocationRef != null){
 			alert("Your location is not idientyfied yet please start the app again in 10 seconds.");
 			
@@ -28,6 +29,7 @@ var loginPane = {
 				return;
 			}
 		}
+		*/
 		
 		/*
 		if(isAndroid6()){
@@ -46,6 +48,7 @@ var loginPane = {
 		*/
 
 		this.loginImpl();
+		//this.loginImplMockup();
 	},
 	
 	loginPassword: function(){
@@ -93,6 +96,18 @@ var loginPane = {
 			}
 		}, function(error){
 			alert("Scanning failed: " + error);
+		});
+	},
+	
+	loginImplMockup: function(){
+		var code = "948|514|1234";
+	
+		post('login', {logincode: code}, {
+			success: function(data){
+				currentSid(data.sid);
+				
+				gotoPane('map', {team: data.team});
+			}
 		});
 	}
 };

@@ -3,6 +3,12 @@ var _globalConfig = {
 	sid: null
 };
 
+function openBrowserLink(link){
+	var href = $(link).attr("href");
+	
+	cordova.InAppBrowser.open(href, '_system', '');
+}
+
 function isAndroid(){
 	return device.platform == 'Android';
 }

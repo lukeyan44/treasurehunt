@@ -38,11 +38,13 @@
 		<script src="init.js"></script>
 		<script src="js/jquery-1.12.4.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<script src="js/fancybox/jquery.fancybox-1.2.6.js"></script>
 		<script src="js/http.js"></script>
 		<script src="js/login.js"></script>
 		<script src="js/map.js"></script>
 		
 		<link rel="stylesheet" href="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" />
+		<link rel="stylesheet" href="js/fancybox/jquery.fancybox-1.2.6.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <title>Treasure Hunt</title>
     </head>
@@ -57,10 +59,17 @@
 			
 		<div id="login" class="pane">
 		  <div class="inner">
+			<div class="toplink-wrapper"><a href="#abouttext" class="login-about-link">About grapevine treasure hunt app</a></div>
+		    <div id="homepane">
+			  <img src="img/home-icon.jpg">
+			  <a onclick="loginPane.login();return false;"><img src="img/home-btn.jpg"></a>
+			</div>
 			<!--
 			<h4 class="center">Login with QrCode</h4>
 			-->
+			<!--
 			<button class="ui-shadow ui-btn ui-corner-all" onclick="loginPane.login();">Scan QR code</button>
+			-->
 			<!--
 			<h4 class="center">Login with Password</h4>
 			<input type="text" id="login_name" value="" placeholder="Input username">
@@ -87,6 +96,19 @@
 		  <div id="postForm"></div>
 		</div>
 		
+		  <div style="display:none">
+		    <div id="abouttext"><div class="abouttext-inner">
+<p>This is an app for participants to run smartphone treasure hunts from grapevine. 
+To run a treasure hunt it first needs to be set up with theme, teams and location. 
+Treasure hunts are available in several different languages. When done, this app 
+is used to scan the QR code for each team to run their personalized treasure hunt.</p>
+
+<p>Try out a demo treasure hunt - <a href="http://www.grapevine.nu/uk/node/145" onclick="openBrowserLink(this);return false;">get the setup here&gt;&gt;</a>
+</p>
+			</div>
+			</div>
+		  </div>
+		  
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>

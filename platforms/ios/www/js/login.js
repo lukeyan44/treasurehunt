@@ -31,34 +31,47 @@ var loginPane = {
 		}
 		*/
 		
+		/*
 		if(isAndroid6()){
 			cordova.plugins.diagnostic.isCameraAuthorized(function(authorized){
 				if(authorized){
 					self.loginImpl();
 				}else{
-					alert("Please enable camera for the app");
+					alert("You need to permit the app to use the camera");
 				}
 			}, function(error){
 				alert("Error when checking camera: " + error);
 			});
 		}else if(isAndroid()){
-			var permissions = cordova.plugins.permissions;
-			
-			permissions.hasPermission(permissions.CAMERA, function(status){
-				alert(status.hasPermission);
-				if(status.hasPermission){
-					self.loginImpl();
-				}else{
-					alert("Please enable camera for the app");
-				}
-			}, function(){
-				alert("Failed to check camera permission");
-			});
-		}else{
 			this.loginImpl();
 		}
+		*/
 
-
+		this.loginImpl();
+		//this.loginImplMockup();
+	},
+	
+	loginPassword: function(){
+		var user = $("#login_name").val();
+		var pass = $("#login_pass").val();
+		
+		if(!user){
+			alert("Please input username");
+			return;
+		}
+		
+		if(!pass){
+			alert("Please input password");
+			return;
+		}
+		
+		post('login', {user: user, pass: pass}, {
+			success: function(data){
+				currentSid(data.sid);
+				
+				gotoPane('map', {team: data.team});
+			}
+		});
 	},
 	
 	loginImpl: function(){
@@ -83,6 +96,18 @@ var loginPane = {
 			}
 		}, function(error){
 			alert("Scanning failed: " + error);
+		});
+	},
+	
+	loginImplMockup: function(){
+		var code = "948|514|1234";
+	
+		post('login', {logincode: code}, {
+			success: function(data){
+				currentSid(data.sid);
+				
+				gotoPane('map', {team: data.team});
+			}
 		});
 	}
 };

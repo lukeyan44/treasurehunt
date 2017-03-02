@@ -91,6 +91,12 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
     },
 };
+
+function logoutMap(){
+	if(confirm("Are you sure to logout?")){
+		gotoPane('login');
+	}
+}
 	
 function gotoPane(paneId, param){
 	$(".pane.show").removeClass('show');
