@@ -27,3 +27,9 @@ cordova run android --release --device
 error: unknown host service的解决办法
 http://bbs.gfan.com/android-7224337-1-1.html
 netstat -ano | findstr "5037"
+
+
+
+keytool -genkey -v -keystore treasurehunt-release-key.keystore -alias treasurehunt_mobile1 -keyalg RSA -keysize 2048 -validity 10000
+
+keytool -list -keystore treasurehunt-release-key.keystore -alias treasurehunt_mobile1
