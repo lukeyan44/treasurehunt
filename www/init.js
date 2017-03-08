@@ -1,8 +1,15 @@
 var ENV = {
-	baseurl: 'https://www.grapevine.nu/mobile0/'
+	baseurl: 'https://www.grapevine.nu/',
+	appPath: '',
 };
 
-ENV.endpoint = ENV.baseurl+'api/';
+ENV.getEndpoint = function(){
+	return ENV.baseurl+ENV.appPath+'/api/';
+}
+
+ENV.getBaseurl = function(){
+	return ENV.baseurl+ENV.appPath;
+}
 
 var appPanes = {
 	panes: {}

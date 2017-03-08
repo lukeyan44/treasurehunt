@@ -194,7 +194,7 @@ function onClickQuestion(e){
 		$("#postForm").append(html);
 		var str = $("#postForm form").serialize();
 		//alert('post['+currentTeam.nid+']: '+str);
-		$.post(ENV.baseurl+"/post-answer/"+currentTeam.nid, str, function(){});
+		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(){});
 		
 		showGoalWindow(q);
 		
@@ -227,7 +227,7 @@ function onClickQuestion(e){
 		$("#postForm").append(html);
 		
 		var str = $("#postForm form").serialize();
-		$.post(ENV.baseurl+"/post-answer/"+currentTeam.nid, str, function(){});
+		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(){});
 
 	}
 

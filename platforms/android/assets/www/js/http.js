@@ -57,7 +57,7 @@ function post(func, data, callbacks, slient){
 	data._sid_ = currentSid();
 	
 	$.ajax({
-		url: ENV.endpoint + func,
+		url: ENV.getEndpoint() + func,
 		type: 'POST',
 		data: data,
 		beforeSend: function(){

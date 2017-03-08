@@ -82,6 +82,10 @@ var loginPane = {
 					if(action == 'login'){
 						var code = result.text.substring(pos + 1);
 				
+						var apppos = code.indexOf('|');
+						ENV.appPath = code.substring(0, apppos)
+						code = code.substring(apppos + 1);
+				
 						post('login', {logincode: code}, {
 							success: function(data){
 								currentSid(data.sid);
