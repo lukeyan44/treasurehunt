@@ -37,25 +37,39 @@ appPanes.panes['map'] = {
 			currentTeam.questions.push(goalPoint);
 			
 			if(currentTeam.event_status == 'Stop'){
-				$("#map-info").html("<h2>The event has been stopped</h2>");
+				$("#map-info").removeClass('theme_story_board').html("<h2>The event has been stopped</h2>");
 			}else if(currentTeam.played){
-				$("#map-info").html("<h2>You have finished it</h2>");
+				$("#map-info").removeClass('theme_story_board').html("<h2>You have finished it</h2>");
 			}else{
 				//initGoogleMap();
 				
 				if(currentTeam.cached){
 					mapButtonAction.start();
 				}else{
-					$("#map-info").html(currentTeam.theme_story_board);
+					$("#map-info").height($(window).height() - $("#map-button-next").height());
+					$("#map-info").addClass('theme_story_board').html(currentTeam.theme_story_board);
 					$("#map-button-next").show();
 					toggleMapActoin(true);
 				}
 
 			}
-			
-			
 		},
 };
+
+$(window).resize(function(){
+	if($("#map-info").hasClass('theme_story_board')){
+		$("#map-info").height($(window).height() - $("#map-button-next").height());
+	}
+	
+	if($("#map_canvas").length > 0){
+		$("#map_canvas").height($(window).height());
+	}
+	
+	if($(".popuptext").length > 0){
+		$(".popuptext").height($(window).height());
+		$(".popuptext").width($(window).width());
+	}
+});
 
 function toggleMapActoin(bol){
 	var h = $(window).height();

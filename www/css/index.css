@@ -120,6 +120,11 @@ display:none;
 margin:10px;
 }
 
+#map-info{
+overflow:auto;
+height:300px;
+}
+
 #map-info img{
 max-width:100%;
 width:100%;
