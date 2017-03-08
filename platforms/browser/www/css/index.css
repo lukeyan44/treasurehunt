@@ -120,6 +120,11 @@ display:none;
 margin:10px;
 }
 
+#map-info{
+overflow:auto;
+height:300px;
+}
+
 #map-info img{
 max-width:100%;
 width:100%;
@@ -226,11 +231,20 @@ text-transform:none;
 position:absolute;
 top:5px;
 right:5px;
+z-index:999999;
+}
+
+.popuptext-inner{
+padding-top:25px;
 }
 
 div#fancy_div{
 background-color:#ffffff;
 color: #000000;
+height:auto;
+}
+
+.abouttext-inner{
 font-size:120%;
 }
 

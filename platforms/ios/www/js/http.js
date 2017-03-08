@@ -3,6 +3,12 @@ var _globalConfig = {
 	sid: null
 };
 
+function openBrowserLink(link){
+	var href = $(link).attr("href");
+	
+	cordova.InAppBrowser.open(href, '_system', '');
+}
+
 function isAndroid(){
 	return device.platform == 'Android';
 }
@@ -51,7 +57,7 @@ function post(func, data, callbacks, slient){
 	data._sid_ = currentSid();
 	
 	$.ajax({
-		url: ENV.endpoint + func,
+		url: ENV.getEndpoint() + func,
 		type: 'POST',
 		data: data,
 		beforeSend: function(){

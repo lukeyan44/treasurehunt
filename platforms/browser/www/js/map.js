@@ -37,25 +37,39 @@ appPanes.panes['map'] = {
 			currentTeam.questions.push(goalPoint);
 			
 			if(currentTeam.event_status == 'Stop'){
-				$("#map-info").html("<h2>The event has been stopped</h2>");
+				$("#map-info").removeClass('theme_story_board').html("<h2>The event has been stopped</h2>");
 			}else if(currentTeam.played){
-				$("#map-info").html("<h2>You have finished it</h2>");
+				$("#map-info").removeClass('theme_story_board').html("<h2>You have finished it</h2>");
 			}else{
 				//initGoogleMap();
 				
 				if(currentTeam.cached){
 					mapButtonAction.start();
 				}else{
-					$("#map-info").html(currentTeam.theme_story_board);
+					$("#map-info").height($(window).height() - $("#map-button-next").height());
+					$("#map-info").addClass('theme_story_board').html(currentTeam.theme_story_board);
 					$("#map-button-next").show();
 					toggleMapActoin(true);
 				}
 
 			}
-			
-			
 		},
 };
+
+$(window).resize(function(){
+	if($("#map-info").hasClass('theme_story_board')){
+		$("#map-info").height($(window).height() - $("#map-button-next").height());
+	}
+	
+	if($("#map_canvas").length > 0){
+		$("#map_canvas").height($(window).height());
+	}
+	
+	if($(".popuptext").length > 0){
+		$(".popuptext").height($(window).height());
+		$(".popuptext").width($(window).width());
+	}
+});
 
 function toggleMapActoin(bol){
 	var h = $(window).height();
@@ -74,23 +88,33 @@ function initGoogleMap(_lat, _lng, bool){
 	}
 	
 	var h = $(window).height();
-	var logouthtml = '<div class="toplink-wrapper"><a href="#abouttext" class="about-link">About</a> | <a href="#" class="logout-link" onclick="logoutMap(); return false;">Logout</a></div>';
+	var logouthtml = '<div class="toplink-wrapper"><a href="#abouttext" onclick="openPopupText(this); return false;">About grapevine treasure hunt app</a> | <a href="#" class="logout-link" onclick="logoutMap(); return false;">Logout</a></div>';
 	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div>"+logouthtml+"</div>");
 	var div = document.getElementById("map_canvas");
 	
 	map = plugin.google.maps.Map.getMap(div);
 	
 	map.on(plugin.google.maps.event.MAP_READY, onMapReady);
+}
+
+function openPopupText(link){
+	overlay = true;
 	
-	var windowWidth = jQuery(window).width();
-	var windowHeight = jQuery(window).height();
-	$("a.about-link").fancybox({
-		frameWidth: (windowWidth < 900) ? windowWidth*0.7 : 900,
-		frameHeight: (windowHeight < 750) ? windowHeight*0.6 : 750,
-		hideOnOverlayClick:false,
-		hideOnContentClick:false,
-		showCloseButton:true
-	});
+	var text = $($(link).attr("href")).html();
+	var token = new Date().getTime();
+
+	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
+	html += text;
+	html += '<button class="ui-shadow ui-btn ui-corner-all" onclick="closePopupText();">Close</button>';
+	html += '</div></div>';
+
+	$("#popupPane").html("");
+	$("#popupPane").append(html);
+}
+
+function closePopupText(){
+	overlay = false;
+	$(".popuptext").remove();
 }
 
 var mapButtonAction = {
@@ -184,7 +208,7 @@ function onClickQuestion(e){
 		$("#postForm").append(html);
 		var str = $("#postForm form").serialize();
 		//alert('post['+currentTeam.nid+']: '+str);
-		$.post(ENV.baseurl+"/post-answer/"+currentTeam.nid, str, function(){});
+		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(){});
 		
 		showGoalWindow(q);
 		
@@ -217,7 +241,7 @@ function onClickQuestion(e){
 		$("#postForm").append(html);
 		
 		var str = $("#postForm form").serialize();
-		$.post(ENV.baseurl+"/post-answer/"+currentTeam.nid, str, function(){});
+		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(){});
 
 	}
 

@@ -6,7 +6,6 @@ var loginPane = {
 		
 		var self = this;
 	
-		/*
 		if(this.checkedLocationRef != null){
 			alert("Your location is not idientyfied yet please start the app again in 10 seconds.");
 			
@@ -29,7 +28,6 @@ var loginPane = {
 				return;
 			}
 		}
-		*/
 		
 		/*
 		if(isAndroid6()){
@@ -83,6 +81,10 @@ var loginPane = {
 					var action = result.text.substring(0, pos);
 					if(action == 'login'){
 						var code = result.text.substring(pos + 1);
+				
+						var apppos = code.indexOf('|');
+						ENV.appPath = code.substring(0, apppos)
+						code = code.substring(apppos + 1);
 				
 						post('login', {logincode: code}, {
 							success: function(data){

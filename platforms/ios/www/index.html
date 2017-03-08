@@ -59,6 +59,7 @@
 			
 		<div id="login" class="pane">
 		  <div class="inner">
+			<div class="toplink-wrapper"><a href="#abouttext" class="login-about-link">About grapevine treasure hunt app</a></div>
 		    <div id="homepane">
 			  <img src="img/home-icon.jpg">
 			  <a onclick="loginPane.login();return false;"><img src="img/home-btn.jpg"></a>
@@ -96,14 +97,15 @@
 		</div>
 		
 		  <div style="display:none">
-		    <div id="abouttext">
+		    <div id="abouttext"><div class="abouttext-inner">
 <p>This is an app for participants to run smartphone treasure hunts from grapevine. 
 To run a treasure hunt it first needs to be set up with theme, teams and location. 
 Treasure hunts are available in several different languages. When done, this app 
 is used to scan the QR code for each team to run their personalized treasure hunt.</p>
 
-<p>Try out a demo treasure hunt - <a href="http://www.grapevine.nu/uk/node/145">get the setup here&gt;&gt;</a>
+<p>Try out a demo treasure hunt - <a href="http://www.grapevine.nu/uk/node/145" onclick="openBrowserLink(this);return false;">get the setup here&gt;&gt;</a>
 </p>
+			</div>
 			</div>
 		  </div>
 		  

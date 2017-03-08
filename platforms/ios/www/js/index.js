@@ -36,7 +36,23 @@ var app = {
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
 		
+		alert(screen);
+		alert(screen.orientation);
+		alert(screen.orientation.lock);
+		screen.orientation = 'portrait-primary';
+		alert(screen.orientation);
+		
 		gotoPane('login');
+		
+		var windowWidth = jQuery(window).width();
+		var windowHeight = jQuery(window).height();
+		$("a.login-about-link").fancybox({
+			frameWidth: (windowWidth < 900) ? windowWidth*0.7 : 900,
+			frameHeight: (windowHeight < 750) ? windowHeight*0.6 : 750,
+			hideOnOverlayClick:false,
+			hideOnContentClick:false,
+			showCloseButton:true
+		});
 		
 		cordova.plugins.diagnostic.isWifiAvailable(function(available){
 			if(!available){
