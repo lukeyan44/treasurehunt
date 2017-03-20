@@ -49,20 +49,21 @@ appPanes.panes['map'] = {
 					$("#map-info").height($(window).height() - $("#map-button-next").height());
 					
 					var html_text = '';
-					if(currentTeam.event_text){
-						html_text += currentTeam.event_text;
-					}
-					if(currentTeam.event_image){
-						html_text += '<p><img src="'+currentTeam.event_image+'"></p>';
+					$("#map-info").addClass('theme_story_board');
+					if(currentTeam.event_text || currentTeam.event_image){
+						$("#map-info").addClass('theme_story_board-firststep');
+					
+						if(currentTeam.event_text){
+							html_text += currentTeam.event_text;
+						}
+						if(currentTeam.event_image){
+							html_text += '<p><img src="'+currentTeam.event_image+'"></p>';
+						}
+					}else{
+						html_text += currentTeam.theme_story_board;
 					}
 					
-					html_text += currentTeam.theme_story_board;
-					
-					if(currentTeam.goal_text){
-						html_text += currentTeam.goal_text;
-					}
-					
-					$("#map-info").addClass('theme_story_board').html(html_text);
+					$("#map-info").html(html_text);
 					$("#map-button-next").show();
 					toggleMapActoin(true);
 				}
@@ -134,10 +135,18 @@ function closePopupText(){
 
 var mapButtonAction = {
 	next: function(){
-		$("#map-button-next").hide();
-		$("#map-button-start").show();
-		$("#map-timer").hide();
-		$("#timerCounter").html("00:00:00");
+		if($("#map-info").hasClass('theme_story_board-firststep')){
+			$("#map-info").removeClass('theme_story_board-firststep');
+			
+			var html_text = currentTeam.theme_story_board;
+			$("#map-info").html(html_text);
+		}else{
+			$("#map-button-next").hide();
+			$("#map-button-start").show();
+			$("#map-timer").hide();
+			$("#timerCounter").html("00:00:00");
+		}
+	
 	},
 	start: function(){
 		$("#map-info").hide();
