@@ -47,7 +47,22 @@ appPanes.panes['map'] = {
 					mapButtonAction.start();
 				}else{
 					$("#map-info").height($(window).height() - $("#map-button-next").height());
-					$("#map-info").addClass('theme_story_board').html(currentTeam.theme_story_board);
+					
+					var html_text = '';
+					if(currentTeam.event_text){
+						html_text += currentTeam.event_text;
+					}
+					if(currentTeam.event_image){
+						html_text += '<p><img src="'+currentTeam.event_image+'"></p>';
+					}
+					
+					html_text += currentTeam.theme_story_board;
+					
+					if(currentTeam.goal_text){
+						html_text += currentTeam.goal_text;
+					}
+					
+					$("#map-info").addClass('theme_story_board').html(html_text);
 					$("#map-button-next").show();
 					toggleMapActoin(true);
 				}
