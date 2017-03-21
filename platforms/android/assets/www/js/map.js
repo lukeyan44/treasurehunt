@@ -53,11 +53,11 @@ appPanes.panes['map'] = {
 					if(currentTeam.event_text || currentTeam.event_image){
 						$("#map-info").addClass('theme_story_board-firststep');
 					
-						if(currentTeam.event_text){
-							html_text += currentTeam.event_text;
-						}
 						if(currentTeam.event_image){
 							html_text += '<p><img src="'+currentTeam.event_image+'"></p>';
+						}
+						if(currentTeam.event_text){
+							html_text += '<p>'+currentTeam.event_text+'</p>';
 						}
 					}else{
 						html_text += currentTeam.theme_story_board;
@@ -277,6 +277,11 @@ function showGoalWindow(q){
 	var token = new Date().getTime();
 
 	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
+	
+	if(currentTeam.goal_text){
+		html += '<p>'+currentTeam.goal_text+'</p>';
+	}
+	
 	html += q.window1 ? q.window1 : '';
 	html += '</div></div>';
 
