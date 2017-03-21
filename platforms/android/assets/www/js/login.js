@@ -29,7 +29,6 @@ var loginPane = {
 			}
 		}
 		
-		/*
 		if(isAndroid6()){
 			cordova.plugins.diagnostic.isCameraAuthorized(function(authorized){
 				if(authorized){
@@ -43,9 +42,8 @@ var loginPane = {
 		}else if(isAndroid()){
 			this.loginImpl();
 		}
-		*/
 
-		this.loginImpl();
+		//this.loginImpl();
 		//this.loginImplMockup();
 	},
 	
