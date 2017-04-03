@@ -180,12 +180,16 @@ function onMapReady(){
 		for(var i = 0; i< currentTeam.currentQuestion; i++){
 			var q = currentTeam.questions[i];
 			var label = q.goal ? 'X' : (q.index+1);
-			//alert(i+", lat: "+q.lat+", lng: "+q.lng);
-			q.marker = map.addMarker({
-				position: {lat: q.lat, lng: q.lng},
-				question: q,
-				icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000',
-			});
+			
+			(function(_q, _label){
+				map.addMarker({
+					position: {lat: _q.lat, lng: _q.lng},
+					question: _q,
+					icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+_label+'|FF0000|000000',
+				}, function(marker){
+					_q.marker = marker;
+				});
+			})(q, label);
 		}
 		
 		startQuestion(currentTeam.currentQuestion);
@@ -323,6 +327,11 @@ function onSelectAnswer(answerIndex){
 	q.answerIndex = answerIndex;
 	
 	var label = q.goal ? 'G' : (q.index+1);
+	
+	if(!q.marker){
+		alert('Missing question marker['+currentTeam.currentQuestion+']');
+	}
+	
 	q.marker.setIcon('http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000');
 	//q.marker.setCursor('default');
 	try{
