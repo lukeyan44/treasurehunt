@@ -177,22 +177,24 @@ function onMapReady(){
 	if(currentTeam.currentQuestion < 0){
 		startQuestion(0);
 	}else{
-		for(var i = 0; i< currentTeam.currentQuestion; i++){
-			var q = currentTeam.questions[i];
-			var label = q.goal ? 'X' : (q.index+1);
-			
-			(function(_q, _label){
-				map.addMarker({
-					position: {lat: _q.lat, lng: _q.lng},
-					question: _q,
-					icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+_label+'|FF0000|000000',
-				}, function(marker){
-					_q.marker = marker;
-				});
-			})(q, label);
-		}
-		
 		startQuestion(currentTeam.currentQuestion);
+		
+		setTimeout(function(){
+			for(var i = 0; i< currentTeam.currentQuestion; i++){
+				var q = currentTeam.questions[i];
+				var label = q.goal ? 'X' : (q.index+1);
+				
+				(function(_q, _label){
+					map.addMarker({
+						position: {lat: _q.lat, lng: _q.lng},
+						question: _q,
+						icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+_label+'|FF0000|000000',
+					}, function(marker){
+						_q.marker = marker;
+					});
+				})(q, label);
+			}
+		}, 500);
 	}
 	
 	traceInterval = setInterval(function(){
@@ -329,14 +331,16 @@ function onSelectAnswer(answerIndex){
 	var label = q.goal ? 'G' : (q.index+1);
 	
 	if(!q.marker){
-		alert('Missing question marker['+currentTeam.currentQuestion+']');
+		//alert('Missing question marker['+currentTeam.currentQuestion+']');
+	}else{
+		q.marker.setIcon('http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000');
+		//q.marker.setCursor('default');
+		try{
+			q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+		}catch(e){}
 	}
 	
-	q.marker.setIcon('http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000');
-	//q.marker.setCursor('default');
-	try{
-		q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
-	}catch(e){}
+
 	
 	if(infowindow){
 		infowindow.close();
@@ -387,20 +391,25 @@ function updateLoc(lat, lng){
 
 	var label = q.goal ? 'X' : (q.index+1);
 	if(currentTeam.closeDistance < distance){
-		q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000'});
-		//q.marker.setCursor('default');
-		
-		try{
-			q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
-		}catch(e){}
+		if(q.marker){
+			q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000'});
+			//q.marker.setCursor('default');
+			
+			try{
+				q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+			}catch(e){}
+		}
+
 	}else{
-		q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|669999|000000'});
-		//q.marker.setCursor('pointer');
-		
-		try{
-			q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
-		}catch(e){}
-		q.marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+		if(q.marker){
+			q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|669999|000000'});
+			//q.marker.setCursor('pointer');
+			
+			try{
+				q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+			}catch(e){}
+			q.marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+		}
 	}
 	
 	if(map){
@@ -429,14 +438,16 @@ function startQuestion(index){
 	currentTeam.currentQuestion = index;
 	var label = q.goal ? 'X' : (q.index+1);
 	
-	map.addMarker({
-		position: {lat: q.lat, lng: q.lng},
-		question: q,
-		//title: q.index,
-		icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000',
-	}, function(marker){
-		q.marker = marker;
-	});
+	(function(_q, _label){
+		map.addMarker({
+			position: {lat: _q.lat, lng: _q.lng},
+			question: _q,
+			icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+_label+'|027AC6|000000',
+		}, function(marker){
+			//_q.marker = marker;
+			currentTeam.questions[currentTeam.currentQuestion].marker = marker;
+		});
+	})(q, label);
 	
 	map.setCenter(new plugin.google.maps.LatLng(q.lat, q.lng));
 	return true;

@@ -260,3 +260,7 @@ padding-top:100px;
 #homepane img{
 max-width:70%;
 }
+
+a#login-last-btn{
+display:none;
+}

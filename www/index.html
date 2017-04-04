@@ -57,12 +57,13 @@
 				</div>
         </div>
 			
-		<div id="login" class="pane">
+		<div id="login" class="pane" onInit="initLogin">
 		  <div class="inner">
 			<div class="toplink-wrapper"><a href="#abouttext" class="login-about-link">About grapevine treasure hunt app</a></div>
 		    <div id="homepane">
 			  <img src="img/home-icon.jpg">
 			  <a onclick="loginPane.login();return false;"><img src="img/home-btn.jpg"></a>
+			  <a id="login-last-btn" onclick="loginPane.loginLastGame();return false;"><img src="img/login-last-btn.jpg"></a>
 			</div>
 			<!--
 			<h4 class="center">Login with QrCode</h4>

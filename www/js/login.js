@@ -2,6 +2,14 @@ var loginPane = {
 	
 	checkedLocationRef: null,
 
+	initLogin: function(){
+		var last = window.localStorage.getItem('last_login_game');
+		
+		if(last){
+			$('#login-last-btn').show();
+		}
+	},
+	
 	login: function(){
 		
 		var self = this;
@@ -71,33 +79,43 @@ var loginPane = {
 		});
 	},
 	
+	loginLastGame: function(){
+		var last = window.localStorage.getItem('last_login_game');
+		this.loginWithCode(last);
+	},
+	
 	loginImpl: function(){
+		var self = this;
 		cordova.plugins.barcodeScanner.scan(function(result){
 			if(result.cancelled == false && result.text){
-				
-				var pos = result.text.indexOf(':');
-				if(pos > 0){
-					var action = result.text.substring(0, pos);
-					if(action == 'login'){
-						var code = result.text.substring(pos + 1);
-				
-						var apppos = code.indexOf('|');
-						ENV.appPath = code.substring(0, apppos)
-						code = code.substring(apppos + 1);
-				
-						post('login', {logincode: code}, {
-							success: function(data){
-								currentSid(data.sid);
-								
-								gotoPane('map', {team: data.team});
-							}
-						});
-					}
-				}
+				self.loginWithCode(result.text);
 			}
 		}, function(error){
 			alert("Scanning failed: " + error);
 		});
+	},
+	
+	loginWithCode: function(text){
+		var pos = text.indexOf(':');
+		if(pos > 0){
+			var action = text.substring(0, pos);
+			if(action == 'login'){
+				var code = text.substring(pos + 1);
+		
+				var apppos = code.indexOf('|');
+				ENV.appPath = code.substring(0, apppos)
+				code = code.substring(apppos + 1);
+		
+				post('login', {logincode: code}, {
+					success: function(data){
+						currentSid(data.sid);
+						
+						window.localStorage.setItem('last_login_game', text);
+						gotoPane('map', {team: data.team});
+					}
+				});
+			}
+		}
 	},
 	
 	loginImplMockup: function(){
@@ -112,3 +130,5 @@ var loginPane = {
 		});
 	}
 };
+
+appPanes.panes['login'] = loginPane;

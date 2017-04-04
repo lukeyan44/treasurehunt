@@ -111,7 +111,6 @@ function logoutMap(){
 function gotoPane(paneId, param){
 	$(".pane.show").removeClass('show');
 	$("#"+paneId).addClass('show');
-	
 	if($("#"+paneId).attr('onInit')){
 		appPanes.panes[paneId][$("#"+paneId).attr('onInit')].call(null, param);
 	}
