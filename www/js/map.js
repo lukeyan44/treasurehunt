@@ -38,7 +38,7 @@ appPanes.panes['map'] = {
 			
 			if(currentTeam.event_status == 'Stop'){
 				$("#map-info").removeClass('theme_story_board').html("<h2>The event has been stopped</h2>");
-			}else if(currentTeam.played){
+			}else if(currentTeam.played && parseFloat(currentTeam.played) > 0){
 				$("#map-info").removeClass('theme_story_board').html("<h2>You have finished it</h2>");
 			}else{
 				//initGoogleMap();
