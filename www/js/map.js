@@ -233,12 +233,16 @@ function onClickQuestion(e){
 			html += '<input type="hidden" name="q['+temp.index+'][answerIndex]" value="'+temp.answerIndex+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][correct]" value="'+((temp.answerIndex == temp.field_correct_answer) ? 1 : 0)+'">';
 		}
+		html += '<input type="hidden" name="goaltext" class="goaltext-hidden" value="">';
 		html += '</form>';
 		
 		$("#postForm").append(html);
+		$("input.goaltext-hidden").val(q.window1);
 		var str = $("#postForm form").serialize();
 		//alert('post['+currentTeam.nid+']: '+str);
-		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(){});
+		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(data){
+			$("#goaltext-span").html(data);
+		});
 		
 		showGoalWindow(q);
 		
@@ -288,7 +292,8 @@ function showGoalWindow(q){
 		html += '<p>'+currentTeam.goal_text+'</p>';
 	}
 	
-	html += q.window1 ? q.window1 : '';
+	html += '<span id="goaltext-span">Loading...</span>';
+	//html += q.window1 ? q.window1 : '';
 	html += '</div></div>';
 
 	$("#popupPane").html("");
