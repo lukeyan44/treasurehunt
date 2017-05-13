@@ -1,6 +1,7 @@
 var ENV = {
 	baseurl: 'https://www.grapevine.nu/',
 	appPath: '',
+	version: '20170511'
 };
 
 ENV.getEndpoint = function(){

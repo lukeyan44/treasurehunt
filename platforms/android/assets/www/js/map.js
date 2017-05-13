@@ -232,12 +232,13 @@ function onClickQuestion(e){
 			html += '<input type="hidden" name="q['+temp.index+'][endTime]" value="'+temp.endTime+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][answerIndex]" value="'+temp.answerIndex+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][correct]" value="'+((temp.answerIndex == temp.field_correct_answer) ? 1 : 0)+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][retried]" value="'+temp.retried+'">';
 		}
 		html += '<input type="hidden" name="goaltext" class="goaltext-hidden" value="">';
 		html += '</form>';
 		
 		$("#postForm").append(html);
-		$("input.goaltext-hidden").val(q.window1);
+		$("input.goaltext-hidden").val(currentTeam.goal_text);
 		var str = $("#postForm form").serialize();
 		//alert('post['+currentTeam.nid+']: '+str);
 		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(data){
@@ -269,6 +270,7 @@ function onClickQuestion(e){
 			html += '<input type="hidden" name="q['+temp.index+'][endTime]" value="'+temp.endTime+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][answerIndex]" value="'+temp.answerIndex+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][correct]" value="'+((temp.answerIndex == temp.field_correct_answer) ? 1 : 0)+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][retried]" value="'+temp.retried+'">';
 		}
 		html += '</form>';
 		
@@ -288,12 +290,17 @@ function showGoalWindow(q){
 
 	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
 	
-	if(currentTeam.goal_text){
-		html += '<p>'+currentTeam.goal_text+'</p>';
+	if(currentTeam.apiversion && parseInt(currentTeam.apiversion) >= 2){
+		html += '<span id="goaltext-span">Loading...</span>';
+	}else{
+		if(currentTeam.goal_text){
+			html += '<p>'+currentTeam.goal_text+'</p>';
+		}
+		
+		html += q.window1 ? q.window1 : '';
 	}
+
 	
-	html += '<span id="goaltext-span">Loading...</span>';
-	//html += q.window1 ? q.window1 : '';
 	html += '</div></div>';
 
 	$("#popupPane").html("");
@@ -351,6 +358,12 @@ function onSelectAnswer(answerIndex){
 		infowindow.close();
 		infowindow = null;
 	}
+	
+	if(!q.retried){
+		q.retried = 0;
+	}
+	q.retried++;
+	q.retriedTime = new Date();
 	
 	if(q.answerIndex == q.field_correct_answer){
 		overlay = false;
@@ -529,7 +542,9 @@ function uploadCache(){
 			endTime: currentTeam.questions[i].endTime,
 			window1: currentTeam.questions[i].window1 ? currentTeam.questions[i].window1 : '',
 			window2: currentTeam.questions[i].window2 ? currentTeam.questions[i].window2 : '',
-			answerIndex: currentTeam.questions[i].answerIndex
+			answerIndex: currentTeam.questions[i].answerIndex,
+			retried: currentTeam.questions[i].retried ? currentTeam.questions[i].retried : 0,
+			retriedTime: currentTeam.questions[i].retriedTime
 		});
 	}
 
