@@ -20,6 +20,8 @@ var goalPoint = {goal: true,
 
 var onloadLoc = null;
 
+var curMapType = 'ROADMAP';
+
 appPanes.panes['map'] = {
 
 	initMap: function(param){
@@ -57,7 +59,7 @@ appPanes.panes['map'] = {
 							html_text += '<p><img src="'+currentTeam.event_image+'"></p>';
 						}
 						if(currentTeam.event_text){
-							html_text += '<p>'+currentTeam.event_text+'</p>';
+							html_text += '<p class="bigger-text">'+currentTeam.event_text+'</p>';
 						}
 					}else{
 						html_text += currentTeam.theme_story_board;
@@ -97,6 +99,29 @@ function toggleMapActoin(bol){
 	}
 }
 
+function switchMapType(link){
+	if(curMapType == 'ROADMAP'){
+		curMapType = 'SATELLITE';
+	}else{
+		curMapType = 'ROADMAP';
+	}
+	
+	map.setMapTypeId(plugin.google.maps.MapTypeId[curMapType]);
+	
+	$(link).html(getMapTypeLinkText(curMapType));
+}
+
+function getMapTypeLinkText(_type){
+	switch(_type){
+		case 'ROADMAP':
+			return 'View Satellite';
+		case 'SATELLITE':
+			return 'View Road';
+	}
+	
+	return '';
+}
+
 function initGoogleMap(_lat, _lng, bool){
 	
 	if(_lat && _lng){
@@ -105,10 +130,19 @@ function initGoogleMap(_lat, _lng, bool){
 	
 	var h = $(window).height();
 	var logouthtml = '<div class="toplink-wrapper"><a href="#abouttext" onclick="openPopupText(this); return false;">About grapevine treasure hunt app</a> | <a href="#" class="logout-link" onclick="logoutMap(); return false;">Logout</a></div>';
-	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div>"+logouthtml+"</div>");
+	var buttomHtml = '<div class="bottom-wrapper"><a href="#" onclick="switchMapType(this);return false;">'+getMapTypeLinkText(curMapType)+'</a></div>';
+	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div>"+logouthtml + buttomHtml+"</div>");
 	var div = document.getElementById("map_canvas");
 	
-	map = plugin.google.maps.Map.getMap(div);
+	map = plugin.google.maps.Map.getMap(div, {
+		styles: [
+			{
+				featureType: "poi.business",
+				elementType: "labels",
+				stylers: [{ visibility: "off"}]
+			}
+		]
+	});
 	
 	map.on(plugin.google.maps.event.MAP_READY, onMapReady);
 }
@@ -172,7 +206,7 @@ function onMapReady(){
 		map.setCenter(getCurrentLocation());
 	}
 	
-	map.setMapTypeId(plugin.google.maps.MapTypeId.ROADMAP);
+	map.setMapTypeId(plugin.google.maps.MapTypeId[curMapType]);
 
 	if(currentTeam.currentQuestion < 0){
 		startQuestion(0);
@@ -294,7 +328,7 @@ function showGoalWindow(q){
 		html += '<span id="goaltext-span">Loading...</span>';
 	}else{
 		if(currentTeam.goal_text){
-			html += '<p>'+currentTeam.goal_text+'</p>';
+			html += '<p class="bigger-text">'+currentTeam.goal_text+'</p>';
 		}
 		
 		html += q.window1 ? q.window1 : '';
