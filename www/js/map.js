@@ -203,7 +203,10 @@ function onMapReady(){
 	if(onloadLoc){
 		map.setCenter(new plugin.google.maps.LatLng(onloadLoc.lat, onloadLoc.lng));
 	}else{
-		map.setCenter(getCurrentLocation());
+		var curloc = getCurrentLocation();
+		if(curloc){
+			map.setCenter(curloc);
+		}
 	}
 	
 	map.setMapTypeId(plugin.google.maps.MapTypeId[curMapType]);
@@ -235,7 +238,7 @@ function onMapReady(){
 		// TODO
 		// map.setCenter(getCurrentLocation());
 		var loc = getCurrentLocation();
-		if(loc != null){
+		if(loc){
 			updateLoc(loc.lat, loc.lng);
 		}
 	}, 1000);
@@ -324,7 +327,7 @@ function showGoalWindow(q){
 
 	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
 	
-	if(currentTeam.apiversion && parseInt(currentTeam.apiversion) >= 2){
+	if(currentTeam.apiversion && currentTeam.apiversion == 2){
 		html += '<span id="goaltext-span">Loading...</span>';
 	}else{
 		if(currentTeam.goal_text){
@@ -406,13 +409,19 @@ function onSelectAnswer(answerIndex){
 		$(".popuptext").remove();
 		var next = startQuestion(q.index+1);
 	}else{
-		var html = "<br/><br/><h3>Wrong answer. You now have to wait "+currentTeam.punishmentTime+" seconds before you can reply again.</h3><br/>";
-		html += '<div class="delay-wrapper"><div id="delayblock" style="display:none;"></div><div id="delayblock-text" style="text-align:center;"></div></div>';
-		
-		$(".popuptext .popuptext-inner").html(html);
-		
-		curPunishmentTime = 0;
-		punishmentTimeCounterRef = setInterval(checkPunishmentTime2, 1000);
+	
+		if(currentTeam.apiversion == '2'){
+			var html = "<br/><br/><h3>Wrong answer. You now have to wait "+currentTeam.punishmentTime+" seconds before you can reply again.</h3><br/>";
+			html += '<div class="delay-wrapper"><div id="delayblock" style="display:none;"></div><div id="delayblock-text" style="text-align:center;"></div></div>';
+			
+			$(".popuptext .popuptext-inner").html(html);
+			
+			curPunishmentTime = 0;
+			punishmentTimeCounterRef = setInterval(checkPunishmentTime2, 1000);
+		}else{
+			$(".popuptext").remove();
+			var next = startQuestion(q.index+1);
+		}
 	}
 }
 
@@ -439,6 +448,9 @@ function updateLoc(lat, lng){
 
 	var q = currentTeam.questions[currentTeam.currentQuestion];
 
+	//lat = q.lat;
+	//lng = q.lng;
+	
 	var distance = GetDistance(lat, lng, q.lat, q.lng);
 
 	var label = q.goal ? 'X' : (q.index+1);
