@@ -326,7 +326,7 @@ function showGoalWindow(q){
 	var token = new Date().getTime();
 
 	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
-	
+	/*
 	if(currentTeam.apiversion && currentTeam.apiversion == 2){
 		html += '<span id="goaltext-span">Loading...</span>';
 	}else{
@@ -336,7 +336,9 @@ function showGoalWindow(q){
 		
 		html += q.window1 ? q.window1 : '';
 	}
-
+	*/
+	
+	html += '<span id="goaltext-span">Loading...</span>';
 	
 	html += '</div></div>';
 
