@@ -234,6 +234,13 @@ right:5px;
 z-index:999999;
 }
 
+.bottom-wrapper{
+position:absolute;
+bottom:5px;
+right:5px;
+z-index:999999;
+}
+
 .popuptext-inner{
 padding-top:25px;
 }
@@ -259,4 +266,12 @@ padding-top:100px;
 
 #homepane img{
 max-width:70%;
+}
+
+a#login-last-btn{
+display:none;
+}
+
+.bigger-text{
+font-size:14px;
 }

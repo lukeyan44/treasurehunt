@@ -55,6 +55,7 @@ function currentSid(_sid){
 function post(func, data, callbacks, slient){
 	data._r_ = new Date().getTime();
 	data._sid_ = currentSid();
+	data._version_ = ENV.version;
 	
 	$.ajax({
 		url: ENV.getEndpoint() + func,

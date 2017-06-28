@@ -27,6 +27,9 @@
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {

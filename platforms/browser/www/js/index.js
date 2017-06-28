@@ -36,12 +36,6 @@ var app = {
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
 		
-		alert(screen);
-		alert(screen.orientation);
-		alert(screen.orientation.lock);
-		screen.orientation = 'portrait-primary';
-		alert(screen.orientation);
-		
 		gotoPane('login');
 		
 		var windowWidth = jQuery(window).width();
@@ -117,7 +111,6 @@ function logoutMap(){
 function gotoPane(paneId, param){
 	$(".pane.show").removeClass('show');
 	$("#"+paneId).addClass('show');
-	
 	if($("#"+paneId).attr('onInit')){
 		appPanes.panes[paneId][$("#"+paneId).attr('onInit')].call(null, param);
 	}

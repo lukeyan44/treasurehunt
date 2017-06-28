@@ -20,6 +20,8 @@ var goalPoint = {goal: true,
 
 var onloadLoc = null;
 
+var curMapType = 'ROADMAP';
+
 appPanes.panes['map'] = {
 
 	initMap: function(param){
@@ -38,7 +40,7 @@ appPanes.panes['map'] = {
 			
 			if(currentTeam.event_status == 'Stop'){
 				$("#map-info").removeClass('theme_story_board').html("<h2>The event has been stopped</h2>");
-			}else if(currentTeam.played){
+			}else if(currentTeam.played && parseFloat(currentTeam.played) > 0){
 				$("#map-info").removeClass('theme_story_board').html("<h2>You have finished it</h2>");
 			}else{
 				//initGoogleMap();
@@ -47,7 +49,23 @@ appPanes.panes['map'] = {
 					mapButtonAction.start();
 				}else{
 					$("#map-info").height($(window).height() - $("#map-button-next").height());
-					$("#map-info").addClass('theme_story_board').html(currentTeam.theme_story_board);
+					
+					var html_text = '';
+					$("#map-info").addClass('theme_story_board');
+					if(currentTeam.event_text || currentTeam.event_image){
+						$("#map-info").addClass('theme_story_board-firststep');
+					
+						if(currentTeam.event_image){
+							html_text += '<p><img src="'+currentTeam.event_image+'"></p>';
+						}
+						if(currentTeam.event_text){
+							html_text += '<p class="bigger-text">'+currentTeam.event_text+'</p>';
+						}
+					}else{
+						html_text += currentTeam.theme_story_board;
+					}
+					
+					$("#map-info").html(html_text);
 					$("#map-button-next").show();
 					toggleMapActoin(true);
 				}
@@ -81,6 +99,29 @@ function toggleMapActoin(bol){
 	}
 }
 
+function switchMapType(link){
+	if(curMapType == 'ROADMAP'){
+		curMapType = 'SATELLITE';
+	}else{
+		curMapType = 'ROADMAP';
+	}
+	
+	map.setMapTypeId(plugin.google.maps.MapTypeId[curMapType]);
+	
+	$(link).html(getMapTypeLinkText(curMapType));
+}
+
+function getMapTypeLinkText(_type){
+	switch(_type){
+		case 'ROADMAP':
+			return 'View Satellite';
+		case 'SATELLITE':
+			return 'View Road';
+	}
+	
+	return '';
+}
+
 function initGoogleMap(_lat, _lng, bool){
 	
 	if(_lat && _lng){
@@ -89,10 +130,19 @@ function initGoogleMap(_lat, _lng, bool){
 	
 	var h = $(window).height();
 	var logouthtml = '<div class="toplink-wrapper"><a href="#abouttext" onclick="openPopupText(this); return false;">About grapevine treasure hunt app</a> | <a href="#" class="logout-link" onclick="logoutMap(); return false;">Logout</a></div>';
-	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div>"+logouthtml+"</div>");
+	var buttomHtml = '<div class="bottom-wrapper"><a href="#" onclick="switchMapType(this);return false;">'+getMapTypeLinkText(curMapType)+'</a></div>';
+	$("#map-wrapper").html("<div id='map_canvas' style='height:"+h+"px;'><div id='popupPane'></div>"+logouthtml + buttomHtml+"</div>");
 	var div = document.getElementById("map_canvas");
 	
-	map = plugin.google.maps.Map.getMap(div);
+	map = plugin.google.maps.Map.getMap(div, {
+		styles: [
+			{
+				featureType: "poi.business",
+				elementType: "labels",
+				stylers: [{ visibility: "off"}]
+			}
+		]
+	});
 	
 	map.on(plugin.google.maps.event.MAP_READY, onMapReady);
 }
@@ -119,10 +169,18 @@ function closePopupText(){
 
 var mapButtonAction = {
 	next: function(){
-		$("#map-button-next").hide();
-		$("#map-button-start").show();
-		$("#map-timer").hide();
-		$("#timerCounter").html("00:00:00");
+		if($("#map-info").hasClass('theme_story_board-firststep')){
+			$("#map-info").removeClass('theme_story_board-firststep');
+			
+			var html_text = currentTeam.theme_story_board;
+			$("#map-info").html(html_text);
+		}else{
+			$("#map-button-next").hide();
+			$("#map-button-start").show();
+			$("#map-timer").hide();
+			$("#timerCounter").html("00:00:00");
+		}
+	
 	},
 	start: function(){
 		$("#map-info").hide();
@@ -145,33 +203,42 @@ function onMapReady(){
 	if(onloadLoc){
 		map.setCenter(new plugin.google.maps.LatLng(onloadLoc.lat, onloadLoc.lng));
 	}else{
-		map.setCenter(getCurrentLocation());
+		var curloc = getCurrentLocation();
+		if(curloc){
+			map.setCenter(curloc);
+		}
 	}
 	
-	map.setMapTypeId(plugin.google.maps.MapTypeId.ROADMAP);
+	map.setMapTypeId(plugin.google.maps.MapTypeId[curMapType]);
 
 	if(currentTeam.currentQuestion < 0){
 		startQuestion(0);
 	}else{
-		for(var i = 0; i< currentTeam.currentQuestion; i++){
-			var q = currentTeam.questions[i];
-			var label = q.goal ? 'X' : (q.index+1);
-			//alert(i+", lat: "+q.lat+", lng: "+q.lng);
-			q.marker = map.addMarker({
-				position: {lat: q.lat, lng: q.lng},
-				question: q,
-				icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000',
-			});
-		}
-		
 		startQuestion(currentTeam.currentQuestion);
+		
+		setTimeout(function(){
+			for(var i = 0; i< currentTeam.currentQuestion; i++){
+				var q = currentTeam.questions[i];
+				var label = q.goal ? 'X' : (q.index+1);
+				
+				(function(_q, _label){
+					map.addMarker({
+						position: {lat: _q.lat, lng: _q.lng},
+						question: _q,
+						icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+_label+'|FF0000|000000',
+					}, function(marker){
+						_q.marker = marker;
+					});
+				})(q, label);
+			}
+		}, 500);
 	}
 	
 	traceInterval = setInterval(function(){
 		// TODO
 		// map.setCenter(getCurrentLocation());
 		var loc = getCurrentLocation();
-		if(loc != null){
+		if(loc){
 			updateLoc(loc.lat, loc.lng);
 		}
 	}, 1000);
@@ -202,13 +269,18 @@ function onClickQuestion(e){
 			html += '<input type="hidden" name="q['+temp.index+'][endTime]" value="'+temp.endTime+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][answerIndex]" value="'+temp.answerIndex+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][correct]" value="'+((temp.answerIndex == temp.field_correct_answer) ? 1 : 0)+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][retried]" value="'+temp.retried+'">';
 		}
+		html += '<input type="hidden" name="goaltext" class="goaltext-hidden" value="">';
 		html += '</form>';
 		
 		$("#postForm").append(html);
+		$("input.goaltext-hidden").val(currentTeam.goal_text);
 		var str = $("#postForm form").serialize();
 		//alert('post['+currentTeam.nid+']: '+str);
-		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(){});
+		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(data){
+			$("#goaltext-span").html(data);
+		});
 		
 		showGoalWindow(q);
 		
@@ -235,6 +307,7 @@ function onClickQuestion(e){
 			html += '<input type="hidden" name="q['+temp.index+'][endTime]" value="'+temp.endTime+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][answerIndex]" value="'+temp.answerIndex+'">';
 			html += '<input type="hidden" name="q['+temp.index+'][correct]" value="'+((temp.answerIndex == temp.field_correct_answer) ? 1 : 0)+'">';
+			html += '<input type="hidden" name="q['+temp.index+'][retried]" value="'+temp.retried+'">';
 		}
 		html += '</form>';
 		
@@ -253,7 +326,20 @@ function showGoalWindow(q){
 	var token = new Date().getTime();
 
 	var html = '<div id="w'+token+'" class="popuptext" style="width:'+$(window).width()+'px;height:'+$(window).height()+'px;"><div class="popuptext-inner" style="margin-left:10px;margin-right:10px;">';
-	html += q.window1 ? q.window1 : '';
+	/*
+	if(currentTeam.apiversion && currentTeam.apiversion == 2){
+		html += '<span id="goaltext-span">Loading...</span>';
+	}else{
+		if(currentTeam.goal_text){
+			html += '<p class="bigger-text">'+currentTeam.goal_text+'</p>';
+		}
+		
+		html += q.window1 ? q.window1 : '';
+	}
+	*/
+	
+	html += '<span id="goaltext-span">Loading...</span>';
+	
 	html += '</div></div>';
 
 	$("#popupPane").html("");
@@ -294,16 +380,29 @@ function onSelectAnswer(answerIndex){
 	q.answerIndex = answerIndex;
 	
 	var label = q.goal ? 'G' : (q.index+1);
-	q.marker.setIcon('http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000');
-	//q.marker.setCursor('default');
-	try{
-		q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
-	}catch(e){}
+	
+	if(!q.marker){
+		//alert('Missing question marker['+currentTeam.currentQuestion+']');
+	}else{
+		q.marker.setIcon('http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|FF0000|000000');
+		//q.marker.setCursor('default');
+		try{
+			q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+		}catch(e){}
+	}
+	
+
 	
 	if(infowindow){
 		infowindow.close();
 		infowindow = null;
 	}
+	
+	if(!q.retried){
+		q.retried = 0;
+	}
+	q.retried++;
+	q.retriedTime = new Date();
 	
 	if(q.answerIndex == q.field_correct_answer){
 		overlay = false;
@@ -312,13 +411,19 @@ function onSelectAnswer(answerIndex){
 		$(".popuptext").remove();
 		var next = startQuestion(q.index+1);
 	}else{
-		var html = "<br/><br/><h3>Wrong answer. You now have to wait "+currentTeam.punishmentTime+" seconds before you can reply again.</h3><br/>";
-		html += '<div class="delay-wrapper"><div id="delayblock" style="display:none;"></div><div id="delayblock-text" style="text-align:center;"></div></div>';
-		
-		$(".popuptext .popuptext-inner").html(html);
-		
-		curPunishmentTime = 0;
-		punishmentTimeCounterRef = setInterval(checkPunishmentTime2, 1000);
+	
+		if(currentTeam.apiversion == '2'){
+			var html = "<br/><br/><h3>Wrong answer. You now have to wait "+currentTeam.punishmentTime+" seconds before you can reply again.</h3><br/>";
+			html += '<div class="delay-wrapper"><div id="delayblock" style="display:none;"></div><div id="delayblock-text" style="text-align:center;"></div></div>';
+			
+			$(".popuptext .popuptext-inner").html(html);
+			
+			curPunishmentTime = 0;
+			punishmentTimeCounterRef = setInterval(checkPunishmentTime2, 1000);
+		}else{
+			$(".popuptext").remove();
+			var next = startQuestion(q.index+1);
+		}
 	}
 }
 
@@ -345,24 +450,32 @@ function updateLoc(lat, lng){
 
 	var q = currentTeam.questions[currentTeam.currentQuestion];
 
+	//lat = q.lat;
+	//lng = q.lng;
+	
 	var distance = GetDistance(lat, lng, q.lat, q.lng);
 
 	var label = q.goal ? 'X' : (q.index+1);
 	if(currentTeam.closeDistance < distance){
-		q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000'});
-		//q.marker.setCursor('default');
-		
-		try{
-			q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
-		}catch(e){}
+		if(q.marker){
+			q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000'});
+			//q.marker.setCursor('default');
+			
+			try{
+				q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+			}catch(e){}
+		}
+
 	}else{
-		q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|669999|000000'});
-		//q.marker.setCursor('pointer');
-		
-		try{
-			q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
-		}catch(e){}
-		q.marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+		if(q.marker){
+			q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|669999|000000'});
+			//q.marker.setCursor('pointer');
+			
+			try{
+				q.marker.removeEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+			}catch(e){}
+			q.marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, onClickQuestion);
+		}
 	}
 	
 	if(map){
@@ -391,14 +504,16 @@ function startQuestion(index){
 	currentTeam.currentQuestion = index;
 	var label = q.goal ? 'X' : (q.index+1);
 	
-	map.addMarker({
-		position: {lat: q.lat, lng: q.lng},
-		question: q,
-		//title: q.index,
-		icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000',
-	}, function(marker){
-		q.marker = marker;
-	});
+	(function(_q, _label){
+		map.addMarker({
+			position: {lat: _q.lat, lng: _q.lng},
+			question: _q,
+			icon: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+_label+'|027AC6|000000',
+		}, function(marker){
+			//_q.marker = marker;
+			currentTeam.questions[currentTeam.currentQuestion].marker = marker;
+		});
+	})(q, label);
 	
 	map.setCenter(new plugin.google.maps.LatLng(q.lat, q.lng));
 	return true;
@@ -475,7 +590,9 @@ function uploadCache(){
 			endTime: currentTeam.questions[i].endTime,
 			window1: currentTeam.questions[i].window1 ? currentTeam.questions[i].window1 : '',
 			window2: currentTeam.questions[i].window2 ? currentTeam.questions[i].window2 : '',
-			answerIndex: currentTeam.questions[i].answerIndex
+			answerIndex: currentTeam.questions[i].answerIndex,
+			retried: currentTeam.questions[i].retried ? currentTeam.questions[i].retried : 0,
+			retriedTime: currentTeam.questions[i].retriedTime
 		});
 	}
 
