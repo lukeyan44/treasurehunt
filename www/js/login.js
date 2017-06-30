@@ -3,6 +3,8 @@ var loginPane = {
 	checkedLocationRef: null,
 
 	initLogin: function(){
+		//window.localStorage.setItem('last_login_game', 'login:mobile14|1688|1035|');
+		
 		var last = window.localStorage.getItem('last_login_game');
 		
 		if(last){

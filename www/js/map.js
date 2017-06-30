@@ -501,6 +501,7 @@ function updateLoc(lat, lng){
 	var label = q.goal ? 'X' : (q.index+1);
 	if(currentTeam.closeDistance < distance){
 		if(q.marker){
+			// blue
 			q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000'});
 			//q.marker.setCursor('default');
 			
@@ -511,6 +512,7 @@ function updateLoc(lat, lng){
 
 	}else{
 		if(q.marker){
+			// green
 			q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|669999|000000'});
 			//q.marker.setCursor('pointer');
 			

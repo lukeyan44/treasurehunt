@@ -33,3 +33,5 @@ netstat -ano | findstr "5037"
 keytool -genkey -v -keystore treasurehunt-release-key.keystore -alias treasurehunt_mobile1 -keyalg RSA -keysize 2048 -validity 10000
 
 keytool -list -keystore treasurehunt-release-key.keystore -alias treasurehunt_mobile1
+
+login:mobile14|1688|1035|
