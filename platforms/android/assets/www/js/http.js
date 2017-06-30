@@ -72,7 +72,7 @@ function post(func, data, callbacks, slient){
 			}
 		},
 		error: function(){
-			showAlert('Failed to send request to server');
+			showAlert('Failed to send request to server: ' + ENV.getEndpoint() + func);
 		},
 		success: function(data){
 			var jsondata = jQuery.parseJSON(data);

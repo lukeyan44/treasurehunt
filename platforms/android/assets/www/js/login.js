@@ -15,7 +15,7 @@ var loginPane = {
 	login: function(){
 		
 		var self = this;
-	
+	/*
 		if(this.checkedLocationRef != null){
 			alert("Your location is not idientyfied yet please start the app again in 10 seconds.");
 			
@@ -57,8 +57,8 @@ var loginPane = {
 		}else if(isAndroid()){
 			this.loginImpl();
 		}
-
-		//this.loginImpl();
+*/
+		this.loginImpl();
 		
 		//this.loginImplMockup();
 	},
@@ -107,19 +107,44 @@ var loginPane = {
 		if(pos > 0){
 			var action = text.substring(0, pos);
 			if(action == 'login'){
+				var filename = text.replace(':', '_').replace('\|', '_').replace('\|', '_').replace('\|', '_')+'.teammapping';
+				
 				var code = text.substring(pos + 1);
-		
 				var apppos = code.indexOf('|');
 				ENV.appPath = code.substring(0, apppos)
-				code = code.substring(apppos + 1);
-		
-				post('login', {logincode: code}, {
-					success: function(data){
-						currentSid(data.sid);
+				
+				var loginServer = function(){
+					code = code.substring(apppos + 1);
+			
+					post('login', {logincode: code}, {
+						success: function(data){
+							currentSid(data.sid);
+							
+							putFileContent(filename, data.team.nid);
+							putFileContent("teamcache-"+data.team.nid+".dat", JSON.stringify(data.team));
+							
+							window.localStorage.setItem('last_login_game', text);
+							gotoPane('map', {team: data.team});
+						}
+					});
+				}
+				
+				getFileContent(filename, function(result, data){
+					if(result){
+						var cacheFilename = "teamcache-"+data+".dat";
 						
-						window.localStorage.setItem('last_login_game', text);
-						gotoPane('map', {team: data.team});
+						getFileContent(cacheFilename, function(cacheResult, cacheData){
+							if(cacheResult){
+								gotoPane('map', {team: JSON.parse(cacheData)});
+							}else{
+								loginServer();
+							}
+						});
+					}else{
+						// not logined
+						loginServer();
 					}
+					
 				});
 			}
 		}

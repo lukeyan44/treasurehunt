@@ -97,35 +97,22 @@ $(window).resize(function(){
 });
 
 function checkLocalCacheFile(nid, callback){
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-
-		fs.root.getFile("teamcache-"+nid+".dat", { create: true, exclusive: false }, function (fileEntry) {
+	var filename = "teamcache-"+nid+".dat";
+	getFileContent(filename, function(result, data){
+		//alert('afterasd: '+data);
+		if(result){
+			var tmpTeam = JSON.parse(data);
+			//alert(currentTeam.data.cacheVersion +','+tmpTeam.data.cacheVersion);
+			if(currentTeam.data.cacheVersion < tmpTeam.data.cacheVersion){
+				currentTeam = tmpTeam;
+			}
 			
-			fileEntry.file(function(file){
-				var reader = new FileReader();
-				reader.onloadend = function(){
-					var data = this.result;
-					
-					var tmpTeam = JSON.parse(data);
-					alert(currentTeam.data.cacheVersion +','+tmpTeam.data.cacheVersion);
-					if(currentTeam.data.cacheVersion < tmpTeam.data.cacheVersion){
-						currentTeam = tmpTeam;
-					}
-					
-					callback.apply();
-				};
-				
-				reader.readAsText(file);
-			});
-			
-		}, function(e){
-			alert('failed to create file: ' + e);
 			callback.apply();
-		});
-
-	}, function(e){
-		alert('failed to load FS: ' + e);
-		callback.apply();
+		}else{
+			//alert("Failed to load: " + data);
+			callback.apply();
+		}
+		
 	});
 }
 
@@ -622,33 +609,8 @@ function GetDistance(lat1, lng1, lat2, lng2)
 function uploadCache(uploadServer){
 	currentTeam.data.cacheVersion++;
 
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-
-		fs.root.getFile("teamcache-"+currentTeam.nid+".dat", { create: true, exclusive: false }, function (fileEntry) {
-			
-			fileEntry.createWriter(function (fileWriter) {
-
-				fileWriter.onwriteend = function() {
-				};
-
-				fileWriter.onerror = function (e) {
-					alert("Failed to file write: " + e.toString());
-				};
-
-				var dataObj = new Blob([JSON.stringify(currentTeam)], { type: 'text/plain' });
-
-				fileWriter.write(dataObj);
-				
-				//alert('success write file ' + currentTeam.nid);
-			});
-			
-		}, function(e){
-			alert('failed to create file: ' + e);
-		});
-
-	}, function(e){
-			alert('failed to load FS: ' + e);
-	});
+	var filename = "teamcache-"+currentTeam.nid+".dat";
+	putFileContent(filename, JSON.stringify(currentTeam));
 		
 	if(uploadServer){
 		var questionsClone = [];
