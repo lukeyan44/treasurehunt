@@ -225,6 +225,12 @@ var traceInterval = null;
 function onMapReady(){
 	//showAlert('onMapReady');
 	
+	setInterval(function(){
+		map.getMyLocation(function(location) {
+		  resetLocation({latitude: location.latLng.lat, longitude: location.latLng.lng});
+		});
+	}, 10000);
+
 	map.setZoom(targetZoom);
 	
 	if(onloadLoc){
