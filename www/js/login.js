@@ -15,7 +15,7 @@ var loginPane = {
 	login: function(){
 		
 		var self = this;
-	/*
+	
 		if(this.checkedLocationRef != null){
 			alert("Your location is not idientyfied yet please start the app again in 10 seconds.");
 			
@@ -57,8 +57,8 @@ var loginPane = {
 		}else if(isAndroid()){
 			this.loginImpl();
 		}
-*/
-		this.loginImpl();
+
+		//this.loginImpl();
 		
 		//this.loginImplMockup();
 	},
