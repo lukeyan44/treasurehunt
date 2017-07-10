@@ -44,7 +44,7 @@ function httpInit(){
 		//_globalConfig.deviceLoc = {latitude: 55.5989816809, longitude: 13.0007415};
 	}, function(){
 		//showAlert("Failed to retrieve location");
-	}, {timeout: 30000});
+	}, {timeout: 30000, maximumAge: 3000, enableHighAccuracy: true});
 }
 
 function resetLocation(loc){

@@ -224,13 +224,14 @@ var traceInterval = null;
 
 function onMapReady(){
 	//showAlert('onMapReady');
-	
+	/*
 	setInterval(function(){
 		map.getMyLocation(function(location) {
 		  resetLocation({latitude: location.latLng.lat, longitude: location.latLng.lng});
 		});
 	}, 10000);
-
+	*/
+	
 	map.setZoom(targetZoom);
 	
 	if(onloadLoc){
@@ -573,7 +574,9 @@ function timerCounter(){
 }
 
 function startGame(){
-	setInterval(uploadCache, 10000);
+	setInterval(function(){
+		uploadCache(true);
+	}, 10000);
 
 	currentTeam.startTime = currentTeam.startTime ? currentTeam.startTime : Math.floor(new Date().getTime()/1000);
 

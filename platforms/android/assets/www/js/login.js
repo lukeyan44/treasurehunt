@@ -119,7 +119,6 @@ var loginPane = {
 					post('login', {logincode: code}, {
 						success: function(data){
 							currentSid(data.sid);
-							
 							putFileContent(filename, data.team.nid);
 							putFileContent("teamcache-"+data.team.nid+".dat", JSON.stringify(data.team));
 							
