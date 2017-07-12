@@ -30,6 +30,9 @@
         },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-advanced-geolocation": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {

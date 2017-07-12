@@ -227,6 +227,14 @@ module.exports = [
             "cordova"
         ],
         "runs": true
+    },
+    {
+        "id": "cordova-plugin-advanced-geolocation.AdvancedGeolocation",
+        "file": "plugins/cordova-plugin-advanced-geolocation/www/AdvancedGeolocation.js",
+        "pluginId": "cordova-plugin-advanced-geolocation",
+        "clobbers": [
+            "AdvancedGeolocation"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -240,7 +248,8 @@ module.exports.metadata =
     "cordova.plugins.diagnostic": "3.3.2",
     "cordova-plugin-device": "1.1.4",
     "cordova-plugin-inappbrowser": "1.6.1",
-    "cordova-plugin-file": "4.3.3"
+    "cordova-plugin-file": "4.3.3",
+    "cordova-plugin-advanced-geolocation": "1.1.0"
 };
 // BOTTOM OF METADATA
 });

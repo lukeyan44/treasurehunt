@@ -259,7 +259,8 @@ module.exports.metadata =
     "cordova.plugins.diagnostic": "3.3.2",
     "cordova-plugin-device": "1.1.4",
     "cordova-plugin-inappbrowser": "1.6.1",
-    "cordova-plugin-file": "4.3.3"
+    "cordova-plugin-file": "4.3.3",
+    "cordova-plugin-advanced-geolocation": "1.1.0"
 };
 // BOTTOM OF METADATA
 });

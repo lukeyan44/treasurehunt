@@ -47,6 +47,10 @@
                         {
                             "xml": "<allow-navigation href=\"cdvfile:*\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"AdvancedGeolocation\"><param name=\"android-package\" value=\"com.esri.cordova.geolocation.AdvancedGeolocation\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -56,11 +60,11 @@
                     "/*": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<uses-feature android:name=\"android.hardware.location.gps\" />",
@@ -68,6 +72,18 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
                             "count": 1
                         }
                     ],
@@ -667,6 +683,9 @@
         },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "cordova-plugin-advanced-geolocation": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {},
@@ -898,6 +917,14 @@
                 "cordova"
             ],
             "runs": true
+        },
+        {
+            "id": "cordova-plugin-advanced-geolocation.AdvancedGeolocation",
+            "file": "plugins/cordova-plugin-advanced-geolocation/www/AdvancedGeolocation.js",
+            "pluginId": "cordova-plugin-advanced-geolocation",
+            "clobbers": [
+                "AdvancedGeolocation"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -909,6 +936,7 @@
         "cordova.plugins.diagnostic": "3.3.2",
         "cordova-plugin-device": "1.1.4",
         "cordova-plugin-inappbrowser": "1.6.1",
-        "cordova-plugin-file": "4.3.3"
+        "cordova-plugin-file": "4.3.3",
+        "cordova-plugin-advanced-geolocation": "1.1.0"
     }
 }

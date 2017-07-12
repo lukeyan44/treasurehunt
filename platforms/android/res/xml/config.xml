@@ -32,6 +32,9 @@
         <param name="onload" value="true" />
     </feature>
     <allow-navigation href="cdvfile:*" />
+    <feature name="AdvancedGeolocation">
+        <param name="android-package" value="com.esri.cordova.geolocation.AdvancedGeolocation" />
+    </feature>
     <feature name="Diagnostic">
         <param name="android-package" value="cordova.plugins.Diagnostic" />
         <param name="onload" value="true" />

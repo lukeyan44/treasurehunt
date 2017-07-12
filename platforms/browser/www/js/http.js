@@ -29,15 +29,27 @@ function isAndroid6(){
 	return device.platform == 'Android';
 }
 
+var watchId = null;
+var getLocFromGeoLocation = true;
+
 function httpInit(){
-	var watchId = navigator.geolocation.watchPosition(function(position){
+	getLocFromGeoLocation = true;
+	watchId = navigator.geolocation.watchPosition(function(position){
 		//showAlert("loc: "+position.coords.latitude+", "+position.coords.longitude);
-		_globalConfig.deviceLoc = position.coords;
+		if(getLocFromGeoLocation){
+			_globalConfig.deviceLoc = position.coords;
+		}
+		
 		
 		//_globalConfig.deviceLoc = {latitude: 55.5989816809, longitude: 13.0007415};
 	}, function(){
 		//showAlert("Failed to retrieve location");
-	}, {timeout: 30000});
+	}, {timeout: 30000, maximumAge: 3000, enableHighAccuracy: true});
+}
+
+function resetLocation(loc){
+	getLocFromGeoLocation = false;
+	_globalConfig.deviceLoc = {latitude: loc.latitude, longitude: loc.longitude};
 }
 
 function getCurrentLocation(){
@@ -72,7 +84,7 @@ function post(func, data, callbacks, slient){
 			}
 		},
 		error: function(){
-			showAlert('Failed to send request to server');
+			showAlert('Failed to send request to server: ' + ENV.getEndpoint() + func);
 		},
 		success: function(data){
 			var jsondata = jQuery.parseJSON(data);

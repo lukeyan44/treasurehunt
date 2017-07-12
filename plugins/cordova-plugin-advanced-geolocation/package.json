@@ -1,0 +1,41 @@
+{
+  "name": "cordova-plugin-advanced-geolocation",
+  "version": "1.6.0",
+  "description": "Android geolocation plugin for both GPS and NETWORK-based location providers. Also can return satellite info, cellular info and cellular network signal strength.",
+  "cordova": {
+    "id": "cordova-plugin-advanced-geolocation",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/esri/cordova-plugin-advanced-geolocation.git"
+  },
+  "keywords": [
+    "gps",
+    "location",
+    "geolocation",
+    "satellite",
+    "network",
+    "cellular",
+    "triangulation",
+    "signal-strength",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova",
+    "phonegap"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=5.0.0"
+    }
+  ],
+  "author": "Andy Gup. @agup",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/esri/cordova-plugin-advanced-geolocation/issues"
+  },
+  "homepage": "https://github.com/esri/cordova-plugin-advanced-geolocation/blob/master/README.md"
+}

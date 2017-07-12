@@ -27,50 +27,57 @@ appPanes.panes['map'] = {
 	initMap: function(param){
 			currentTeam = param.team;
 			
-			// for test
-			// currentTeam.currentQuestion = 0;
-			
-			goalPoint.lat = currentTeam.goal_latitude;
-			goalPoint.lng = currentTeam.goal_longitude;
-			
-			//alert(goalPoint.lat+","+goalPoint.lng);
-			
-			goalPoint.window1 = currentTeam.theme_goaltext;
-			currentTeam.questions.push(goalPoint);
-			
-			if(currentTeam.event_status == 'Stop'){
-				$("#map-info").removeClass('theme_story_board').html("<h2>The event has been stopped</h2>");
-			}else if(currentTeam.played && parseFloat(currentTeam.played) > 0){
-				$("#map-info").removeClass('theme_story_board').html("<h2>You have finished it</h2>");
-			}else{
-				//initGoogleMap();
-				
-				if(currentTeam.cached){
-					mapButtonAction.start();
-				}else{
-					$("#map-info").height($(window).height() - $("#map-button-next").height());
-					
-					var html_text = '';
-					$("#map-info").addClass('theme_story_board');
-					if(currentTeam.event_text || currentTeam.event_image){
-						$("#map-info").addClass('theme_story_board-firststep');
-					
-						if(currentTeam.event_image){
-							html_text += '<p><img src="'+currentTeam.event_image+'"></p>';
-						}
-						if(currentTeam.event_text){
-							html_text += '<p class="bigger-text">'+currentTeam.event_text+'</p>';
-						}
-					}else{
-						html_text += currentTeam.theme_story_board;
-					}
-					
-					$("#map-info").html(html_text);
-					$("#map-button-next").show();
-					toggleMapActoin(true);
-				}
-
+			if(!currentTeam.data){
+				currentTeam.data = {cacheVersion: 1};
 			}
+			
+			checkLocalCacheFile(currentTeam.nid, function(){alert('s');
+				// for test
+				// currentTeam.currentQuestion = 0;
+				
+				goalPoint.lat = currentTeam.goal_latitude;
+				goalPoint.lng = currentTeam.goal_longitude;
+				
+				//alert(goalPoint.lat+","+goalPoint.lng);
+				
+				goalPoint.window1 = currentTeam.theme_goaltext;
+				currentTeam.questions.push(goalPoint);
+				
+				if(currentTeam.event_status == 'Stop'){
+					$("#map-info").removeClass('theme_story_board').html("<h2>The event has been stopped</h2>");
+				}else if(currentTeam.played && parseFloat(currentTeam.played) > 0){
+					$("#map-info").removeClass('theme_story_board').html("<h2>You have finished it</h2>");
+				}else{
+					//initGoogleMap();
+					
+					if(currentTeam.cached){
+						mapButtonAction.start();
+					}else{
+						$("#map-info").height($(window).height() - $("#map-button-next").height());
+						
+						var html_text = '';
+						$("#map-info").addClass('theme_story_board');
+						if(currentTeam.event_text || currentTeam.event_image){
+							$("#map-info").addClass('theme_story_board-firststep');
+						
+							if(currentTeam.event_image){
+								html_text += '<p><img src="'+currentTeam.event_image+'"></p>';
+							}
+							if(currentTeam.event_text){
+								html_text += '<p class="bigger-text">'+currentTeam.event_text+'</p>';
+							}
+						}else{
+							html_text += currentTeam.theme_story_board;
+						}
+						
+						$("#map-info").html(html_text);
+						$("#map-button-next").show();
+						toggleMapActoin(true);
+					}
+
+				}
+			});
+			
 		},
 };
 
@@ -88,6 +95,26 @@ $(window).resize(function(){
 		$(".popuptext").width($(window).width());
 	}
 });
+
+function checkLocalCacheFile(nid, callback){
+	var filename = "teamcache-"+nid+".dat";
+	getFileContent(filename, function(result, data){
+		//alert('afterasd: '+data);
+		if(result){
+			var tmpTeam = JSON.parse(data);
+			//alert(currentTeam.data.cacheVersion +','+tmpTeam.data.cacheVersion);
+			if(currentTeam.data.cacheVersion < tmpTeam.data.cacheVersion){
+				currentTeam = tmpTeam;
+			}
+			
+			callback.apply();
+		}else{
+			//alert("Failed to load: " + data);
+			callback.apply();
+		}
+		
+	});
+}
 
 function toggleMapActoin(bol){
 	var h = $(window).height();
@@ -197,6 +224,13 @@ var traceInterval = null;
 
 function onMapReady(){
 	//showAlert('onMapReady');
+	/*
+	setInterval(function(){
+		map.getMyLocation(function(location) {
+		  resetLocation({latitude: location.latLng.lat, longitude: location.latLng.lng});
+		});
+	}, 10000);
+	*/
 	
 	map.setZoom(targetZoom);
 	
@@ -280,6 +314,8 @@ function onClickQuestion(e){
 		//alert('post['+currentTeam.nid+']: '+str);
 		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(data){
 			$("#goaltext-span").html(data);
+			
+			uploadCache(true);
 		});
 		
 		showGoalWindow(q);
@@ -314,8 +350,9 @@ function onClickQuestion(e){
 		$("#postForm").append(html);
 		
 		var str = $("#postForm form").serialize();
-		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(){});
-
+		$.post(ENV.getBaseurl()+"/post-answer/"+currentTeam.nid, str, function(){
+			uploadCache(true);
+		});
 	}
 
 }
@@ -458,6 +495,7 @@ function updateLoc(lat, lng){
 	var label = q.goal ? 'X' : (q.index+1);
 	if(currentTeam.closeDistance < distance){
 		if(q.marker){
+			// blue
 			q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|027AC6|000000'});
 			//q.marker.setCursor('default');
 			
@@ -468,6 +506,7 @@ function updateLoc(lat, lng){
 
 	}else{
 		if(q.marker){
+			// green
 			q.marker.setIcon({url: 'http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+label+'|669999|000000'});
 			//q.marker.setCursor('pointer');
 			
@@ -535,7 +574,9 @@ function timerCounter(){
 }
 
 function startGame(){
-	setInterval(uploadCache, 10000);
+	setInterval(function(){
+		uploadCache(true);
+	}, 10000);
 
 	currentTeam.startTime = currentTeam.startTime ? currentTeam.startTime : Math.floor(new Date().getTime()/1000);
 
@@ -574,34 +615,43 @@ function GetDistance(lat1, lng1, lat2, lng2)
    return s;
 }
 
-function uploadCache(){
-	var questionsClone = [];
-	for(var i=0; i<currentTeam.questions.length-1; i++){
-		questionsClone.push({
-			answers: currentTeam.questions[i].answers,
-			field_correct_answer: currentTeam.questions[i].field_correct_answer,
-			goal: currentTeam.questions[i].goal,
-			index: currentTeam.questions[i].index,
-			lat: currentTeam.questions[i].lat,
-			lng: currentTeam.questions[i].lng,
-			nid: currentTeam.questions[i].nid,
-			startTime: currentTeam.questions[i].startTime,
-			title: currentTeam.questions[i].title,
-			endTime: currentTeam.questions[i].endTime,
-			window1: currentTeam.questions[i].window1 ? currentTeam.questions[i].window1 : '',
-			window2: currentTeam.questions[i].window2 ? currentTeam.questions[i].window2 : '',
-			answerIndex: currentTeam.questions[i].answerIndex,
-			retried: currentTeam.questions[i].retried ? currentTeam.questions[i].retried : 0,
-			retriedTime: currentTeam.questions[i].retriedTime
-		});
-	}
+function uploadCache(uploadServer){
+	currentTeam.data.cacheVersion++;
 
-	post('updatecache/'+currentTeam.nid, {
-		timerCounterStart: currentTeam.timerCounterStart,
-		timerCounterTime: currentTeam.timerCounterTime,
-		startTime: currentTeam.startTime,
-		currentQuestion: currentTeam.currentQuestion,
-		questions: JSON.stringify(questionsClone)
-	}, null, true);
+	var filename = "teamcache-"+currentTeam.nid+".dat";
+	putFileContent(filename, JSON.stringify(currentTeam));
+		
+	if(uploadServer){
+		var questionsClone = [];
+		for(var i=0; i<currentTeam.questions.length-1; i++){
+			questionsClone.push({
+				answers: currentTeam.questions[i].answers,
+				field_correct_answer: currentTeam.questions[i].field_correct_answer,
+				goal: currentTeam.questions[i].goal,
+				index: currentTeam.questions[i].index,
+				lat: currentTeam.questions[i].lat,
+				lng: currentTeam.questions[i].lng,
+				nid: currentTeam.questions[i].nid,
+				startTime: currentTeam.questions[i].startTime,
+				title: currentTeam.questions[i].title,
+				endTime: currentTeam.questions[i].endTime,
+				window1: currentTeam.questions[i].window1 ? currentTeam.questions[i].window1 : '',
+				window2: currentTeam.questions[i].window2 ? currentTeam.questions[i].window2 : '',
+				answerIndex: currentTeam.questions[i].answerIndex,
+				retried: currentTeam.questions[i].retried ? currentTeam.questions[i].retried : 0,
+				retriedTime: currentTeam.questions[i].retriedTime
+			});
+		}
+
+		post('updatecache/'+currentTeam.nid, {
+			timerCounterStart: currentTeam.timerCounterStart,
+			timerCounterTime: currentTeam.timerCounterTime,
+			startTime: currentTeam.startTime,
+			currentQuestion: currentTeam.currentQuestion,
+			questions: JSON.stringify(questionsClone),
+			data: currentTeam.data
+		}, null, true);
+	}
+	
 }
 
