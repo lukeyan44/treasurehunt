@@ -51,6 +51,10 @@
                         {
                             "xml": "<feature name=\"AdvancedGeolocation\"><param name=\"android-package\" value=\"com.esri.cordova.geolocation.AdvancedGeolocation\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"KeepScreenOn\"><param name=\"android-package\" value=\"com.Kidobi.plugins.KeepScreenOn\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -686,6 +690,9 @@
         },
         "cordova-plugin-advanced-geolocation": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "com.Kidobi.plugins.KeepScreenOn": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {},
@@ -925,6 +932,14 @@
             "clobbers": [
                 "AdvancedGeolocation"
             ]
+        },
+        {
+            "id": "com.Kidobi.plugins.KeepScreenOn.KeepScreenOn",
+            "file": "plugins/com.Kidobi.plugins.KeepScreenOn/www/js/keepScreenOn.js",
+            "pluginId": "com.Kidobi.plugins.KeepScreenOn",
+            "clobbers": [
+                "window.keepScreenOn"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -937,6 +952,7 @@
         "cordova-plugin-device": "1.1.4",
         "cordova-plugin-inappbrowser": "1.6.1",
         "cordova-plugin-file": "4.3.3",
-        "cordova-plugin-advanced-geolocation": "1.1.0"
+        "cordova-plugin-advanced-geolocation": "1.1.0",
+        "com.Kidobi.plugins.KeepScreenOn": "1.0"
     }
 }

@@ -245,6 +245,14 @@ module.exports = [
             "cordova"
         ],
         "runs": true
+    },
+    {
+        "id": "com.Kidobi.plugins.KeepScreenOn.KeepScreenOn",
+        "file": "plugins/com.Kidobi.plugins.KeepScreenOn/www/js/keepScreenOn.js",
+        "pluginId": "com.Kidobi.plugins.KeepScreenOn",
+        "clobbers": [
+            "window.keepScreenOn"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -260,7 +268,8 @@ module.exports.metadata =
     "cordova-plugin-device": "1.1.4",
     "cordova-plugin-inappbrowser": "1.6.1",
     "cordova-plugin-file": "4.3.3",
-    "cordova-plugin-advanced-geolocation": "1.1.0"
+    "cordova-plugin-advanced-geolocation": "1.1.0",
+    "com.Kidobi.plugins.KeepScreenOn": "1.0"
 };
 // BOTTOM OF METADATA
 });

@@ -14,6 +14,8 @@ var loginPane = {
 	
 	login: function(){
 		
+		initAdvGeoLocation();
+		
 		var self = this;
 	/*
 		if(this.checkedLocationRef != null){
@@ -360,22 +362,25 @@ function initAdvGeoLocation(){
 				
 				switch(jsonObject.provider){
 					case "gps":
-						params = {type: 'P', lat: jsonObject.latitude, lng: jsonObject.longitude, color: '00FF00'};
+						//params = {type: 'P', lat: jsonObject.latitude, lng: jsonObject.longitude, color: '00FF00'};
+						
+						resetLocation({latitude: jsonObject.latitude, longitude: jsonObject.longitude});
+						
 						break;
 
 					case "network":
-						params = {type: 'N', lat: jsonObject.latitude, lng: jsonObject.longitude, color: '0000FF'};
+						//params = {type: 'N', lat: jsonObject.latitude, lng: jsonObject.longitude, color: '0000FF'};
 						break;
 
 					case "satellite":
 						break;
 						
 					case "cell_info":
-						params = {type: 'C', lat: jsonObject.latitude, lng: jsonObject.longitude, color: '005566'};
+						//params = {type: 'C', lat: jsonObject.latitude, lng: jsonObject.longitude, color: '005566'};
 						break;
 						
 					case "cell_location":
-						params = {type: 'L', lat: jsonObject.latitude, lng: jsonObject.longitude, color: 'BB0066'};
+						//params = {type: 'L', lat: jsonObject.latitude, lng: jsonObject.longitude, color: 'BB0066'};
 						break;  
 					
 					case "signal_strength":
@@ -383,6 +388,7 @@ function initAdvGeoLocation(){
 						break;              	
 				}
 				
+				/*
 				if(params){
 				  if(advGeolocation[params.type]){
 				    advGeolocation[params.type].marker.setPosition(new plugin.google.maps.LatLng(params.lat, params.lng));
@@ -400,6 +406,7 @@ function initAdvGeoLocation(){
 					})(params);
 				  }
 				}
+				*/
 			}
 			catch(exc){
 				console.log("Invalid JSON: " + exc);
@@ -416,7 +423,7 @@ function initAdvGeoLocation(){
 		//
 		////////////////////////////////////////////
 		{
-			"minTime":500,         // Min time interval between updates (ms)
+			"minTime":300,         // Min time interval between updates (ms)
 			"minDistance":1,       // Min distance between updates (meters)
 			"noWarn":true,         // Native location provider warnings
 			"providers":"all",     // Return GPS, NETWORK and CELL locations

@@ -36,6 +36,8 @@ var app = {
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
 		
+		keepScreenOn.KeepScreenOn();
+		
 		gotoPane('login');
 		
 		var windowWidth = jQuery(window).width();

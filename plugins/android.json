@@ -34,6 +34,9 @@
         },
         "cordova-plugin-advanced-geolocation": {
             "PACKAGE_NAME": "nu.grapevine.treasurehunt"
+        },
+        "com.Kidobi.plugins.KeepScreenOn": {
+            "PACKAGE_NAME": "nu.grapevine.treasurehunt"
         }
     },
     "dependent_plugins": {

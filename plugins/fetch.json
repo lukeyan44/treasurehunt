@@ -95,5 +95,14 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com.Kidobi.plugins.KeepScreenOn": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/leohenning/KeepScreenOnPlugin",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
