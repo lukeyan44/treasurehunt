@@ -131,6 +131,10 @@ var loginPane = {
 					});
 				}
 				
+				loginServer();
+				
+				/*
+				禁用本地缓存
 				getFileContent(filename, function(result, data){
 					
 					if(result){
@@ -149,6 +153,7 @@ var loginPane = {
 					}
 					
 				});
+				*/
 			}
 		}
 	},
@@ -271,6 +276,10 @@ $(window).resize(function(){
 });
 
 function checkLocalCacheFile(nid, callback){
+	callback.apply();
+
+	/*
+	禁用本地缓存
 	var filename = "teamcache-"+nid+".dat";
 	getFileContent(filename, function(result, data){
 		//alert('afterasd: '+data);
@@ -288,6 +297,7 @@ function checkLocalCacheFile(nid, callback){
 		}
 		
 	});
+	*/
 }
 
 function toggleMapActoin(bol){
