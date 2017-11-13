@@ -539,16 +539,18 @@ function onMapReady(){
 		}, 500);
 	}
 	
-	/* disabled the auto center for the mail "grapevine app fix" in 2017-11-13
+	// disabled the auto center for the mail "grapevine app fix" in 2017-11-13
 	traceInterval = setInterval(function(){
 		// TODO
 		// map.setCenter(getCurrentLocation());
 		var loc = getCurrentLocation();
 		if(loc){
 			updateLoc(loc.lat, loc.lng);
+			clearInterval(traceInterval);
+			traceInterval = null;
 		}
 	}, 1000);
-	*/
+
 }
 
 function onClickQuestion(e){
