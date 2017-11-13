@@ -539,6 +539,7 @@ function onMapReady(){
 		}, 500);
 	}
 	
+	/* disabled the auto center for the mail "grapevine app fix" in 2017-11-13
 	traceInterval = setInterval(function(){
 		// TODO
 		// map.setCenter(getCurrentLocation());
@@ -547,6 +548,7 @@ function onMapReady(){
 			updateLoc(loc.lat, loc.lng);
 		}
 	}, 1000);
+	*/
 }
 
 function onClickQuestion(e){
