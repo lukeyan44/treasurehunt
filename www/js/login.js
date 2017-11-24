@@ -546,8 +546,8 @@ function onMapReady(){
 		var loc = getCurrentLocation();
 		if(loc){
 			updateLoc(loc.lat, loc.lng);
-			clearInterval(traceInterval);
-			traceInterval = null;
+			//clearInterval(traceInterval);
+			//traceInterval = null;
 		}
 	}, 1000);
 
